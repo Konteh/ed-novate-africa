@@ -187,7 +187,7 @@ export function TalentBridge() {
                       </p>
                     ) : (
                       <Button
-                        variant="accent"
+                        variant={score >= 60 ? "accent" : "outline"}
                         className="w-full"
                         onClick={() => {
                           apply(role.id);

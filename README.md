@@ -65,6 +65,13 @@ You can also skip the login entirely with a deep link, which is useful when shar
 - **The AI asks, it does not decide.** Career Compass explains its reasoning and ends on a question. Feedback is AI-drafted but a tutor edits and sends it, and no competency is ever verified automatically.
 - **One record that compounds.** The Skills Passport carries across courses rather than resetting, and employers only ever see verified entries.
 
+### Interface conventions
+
+- **One typeface, one accent.** Inter throughout. A neutral `ink` scale carries text, borders and surfaces; navy is reserved for the brand, the sidebar and primary actions; gold marks a single accent per view. Status is limited to three quiet tones — verified, in review, not started.
+- **Say it once.** Pages lead with a title and the content itself. No kicker labels above headings, no explanatory paragraph under them, and no caption under a number that the label already explains.
+- **Panels over boxes.** A `Panel` is a hairline border, a header row and a divided body. Cards are not nested inside cards, and stats sit in one divided strip rather than a row of separate tiles.
+- **Everything clickable looks it.** Buttons carry hover, active and `focus-visible` states from one variant set instead of per-page classes; catalogue and list rows are whole-target links.
+
 ## Stack
 
 - Next.js 16 (App Router) and React 19

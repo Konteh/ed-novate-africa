@@ -36,7 +36,13 @@ async function targets() {
 
 const cleanup = () => {
   chrome.kill("SIGKILL");
-  rmSync(profile, { recursive: true, force: true });
+  // Chrome can still be flushing the profile as it dies, so a failed rmdir
+  // here is not worth crashing a capture that already printed its output.
+  try {
+    rmSync(profile, { recursive: true, force: true, maxRetries: 5 });
+  } catch {
+    // Leave the temp profile behind.
+  }
 };
 
 try {

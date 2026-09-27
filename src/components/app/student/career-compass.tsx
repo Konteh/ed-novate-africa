@@ -114,7 +114,7 @@ export function CareerCompass() {
       />
 
       <div className="grid gap-5 lg:grid-cols-[1.1fr_1fr] lg:items-start">
-        <Panel>
+        <Panel className="flex flex-col lg:min-h-[30rem]">
           <div className="flex items-center gap-2.5 border-b border-ink-200 px-5 py-3">
             <span className="grid size-7 place-items-center rounded-full bg-navy-900 text-gold-300">
               <Compass className="size-3.5" />
@@ -138,7 +138,7 @@ export function CareerCompass() {
             </div>
           </div>
 
-          <div className="max-h-[30rem] space-y-4 overflow-y-auto p-5">
+          <div className="max-h-[32rem] flex-1 space-y-4 overflow-y-auto p-5">
             {turns.map((turn, i) => {
               if (turn.kind === "answer") {
                 return (
@@ -211,13 +211,13 @@ export function CareerCompass() {
 
         <div className="space-y-5">
           {!showResult || !result || !primaryCourse ? (
-            <Panel>
-              <div className="flex flex-col items-center px-6 py-16 text-center">
-                <Sparkles className="size-5 text-ink-400" />
+            <Panel className="grid place-items-center px-6 py-16 lg:min-h-[30rem]">
+              <div className="text-center">
+                <Sparkles className="mx-auto size-5 text-ink-400" />
                 <h3 className="mt-3 text-sm font-semibold">
                   Your recommendation appears here
                 </h3>
-                <p className="mt-1 max-w-xs text-sm text-ink-500">
+                <p className="mt-1 text-sm text-ink-500">
                   Answer five questions to see it.
                 </p>
               </div>
