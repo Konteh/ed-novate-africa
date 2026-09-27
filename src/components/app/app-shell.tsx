@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname } from "next/navigation";
 import {
   BadgeCheck,
   BriefcaseBusiness,
@@ -61,7 +61,6 @@ export function AppShell({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
-  const searchParams = useSearchParams();
   const {
     session,
     signIn,
@@ -76,12 +75,13 @@ export function AppShell({
   const [authRole, setAuthRole] = useState<Role>(role);
 
   // `?demo=student|educator` skips the illustrative login so a signed-in view
-  // can be linked directly when showing the prototype.
-  const demoParam = searchParams.get("demo");
+  // can be linked directly when showing the prototype. Read from the location
+  // rather than useSearchParams so these routes still prerender statically.
   useEffect(() => {
-    if (!hydrated) return;
-    if (demoParam === role && session?.role !== role) signIn(role);
-  }, [demoParam, hydrated, role, session?.role, signIn]);
+    if (!hydrated || session?.role === role) return;
+    const demo = new URLSearchParams(window.location.search).get("demo");
+    if (demo === role) signIn(role);
+  }, [hydrated, role, session?.role, signIn]);
 
   const nav = role === "student" ? studentNav : educatorNav;
   const profile = role === "student" ? studentProfile : educatorProfile;
