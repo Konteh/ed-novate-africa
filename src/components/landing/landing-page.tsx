@@ -17,6 +17,7 @@ import { AuthDialog } from "@/components/auth-dialog";
 import { HeroDemo } from "@/components/landing/hero-demo";
 import { Wordmark, WordmarkLight } from "@/components/brand";
 import { Button } from "@/components/ui/button";
+import { LinkButton } from "@/components/app/link-button";
 import { usePlatform } from "@/lib/platform-store";
 import { journeySteps } from "@/lib/data";
 import type { Role } from "@/lib/types";
@@ -131,17 +132,13 @@ export function LandingPage() {
           </nav>
           <div className="flex items-center gap-2">
             {session ? (
-              <Button
-                render={
-                  <Link
-                    href={session.role === "student" ? "/student" : "/educator"}
-                  />
-                }
+              <LinkButton
+                href={session.role === "student" ? "/student" : "/educator"}
                 className="h-9 bg-navy-900 px-4 font-semibold hover:bg-navy-800"
               >
                 Open the platform
                 <ArrowRight className="size-3.5" />
-              </Button>
+              </LinkButton>
             ) : (
               <>
                 <Button

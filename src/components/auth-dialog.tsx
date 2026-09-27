@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { ArrowLeft, Eye, EyeOff, Loader2, LogIn } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -47,42 +47,6 @@ export function AuthDialog({
   role: Role;
   onRoleChange: (role: Role) => void;
 }) {
-  const router = useRouter();
-  const { signIn } = usePlatform();
-  const [username, setUsername] = useState(credentials[role].username);
-  const [password, setPassword] = useState(credentials[role].password);
-  const [reveal, setReveal] = useState(false);
-  const [busy, setBusy] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    setUsername(credentials[role].username);
-    setPassword(credentials[role].password);
-    setError(null);
-  }, [role]);
-
-  const submit = (event: React.FormEvent) => {
-    event.preventDefault();
-    const expected = credentials[role];
-    if (
-      username.trim() !== expected.username ||
-      password !== expected.password
-    ) {
-      setError(
-        `That is not the demo login. Use ${expected.username} / ${expected.password}.`,
-      );
-      return;
-    }
-    setError(null);
-    setBusy(true);
-    window.setTimeout(() => {
-      signIn(role);
-      setBusy(false);
-      onOpenChange(false);
-      router.push(expected.home);
-    }, 650);
-  };
-
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
@@ -140,79 +104,11 @@ export function AuthDialog({
             </code>
           </div>
 
-          <form onSubmit={submit} className="mt-4 space-y-3.5">
-            <div className="space-y-1.5">
-              <Label htmlFor="username" className="text-navy-800">
-                Username
-              </Label>
-              <Input
-                id="username"
-                value={username}
-                autoComplete="username"
-                onChange={(e) => setUsername(e.target.value)}
-                className="h-10"
-              />
-            </div>
-            <div className="space-y-1.5">
-              <Label htmlFor="password" className="text-navy-800">
-                Password
-              </Label>
-              <div className="relative">
-                <Input
-                  id="password"
-                  type={reveal ? "text" : "password"}
-                  value={password}
-                  autoComplete="current-password"
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="h-10 pr-10"
-                />
-                <button
-                  type="button"
-                  onClick={() => setReveal((r) => !r)}
-                  aria-label={reveal ? "Hide password" : "Show password"}
-                  className="absolute top-1/2 right-1 -translate-y-1/2 rounded-md p-2 text-navy-400 transition-colors hover:text-navy-700"
-                >
-                  {reveal ? (
-                    <EyeOff className="size-4" />
-                  ) : (
-                    <Eye className="size-4" />
-                  )}
-                </button>
-              </div>
-            </div>
-
-            {error ? (
-              <p
-                role="alert"
-                className="rounded-lg bg-destructive/10 px-3 py-2 text-[0.8rem] font-medium text-destructive"
-              >
-                {error}
-              </p>
-            ) : null}
-
-            <Button
-              type="submit"
-              disabled={busy}
-              className={cn(
-                "h-11 w-full text-[0.9rem] font-semibold",
-                role === "educator"
-                  ? "bg-gold-400 text-navy-900 hover:bg-gold-300"
-                  : "bg-navy-900 text-white hover:bg-navy-800",
-              )}
-            >
-              {busy ? (
-                <>
-                  <Loader2 className="size-4 animate-spin" />
-                  Signing you in…
-                </>
-              ) : (
-                <>
-                  <LogIn className="size-4" />
-                  Log in
-                </>
-              )}
-            </Button>
-          </form>
+          <LoginForm
+            key={role}
+            role={role}
+            onDone={() => onOpenChange(false)}
+          />
 
           <p className="mt-4 text-[0.72rem] leading-relaxed text-navy-400">
             Prototype note: this sign-in is illustrative. The demo username and
@@ -221,5 +117,113 @@ export function AuthDialog({
         </div>
       </DialogContent>
     </Dialog>
+  );
+}
+
+function LoginForm({ role, onDone }: { role: Role; onDone: () => void }) {
+  const router = useRouter();
+  const { signIn } = usePlatform();
+  const expected = credentials[role];
+  const [username, setUsername] = useState(expected.username);
+  const [password, setPassword] = useState(expected.password);
+  const [reveal, setReveal] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const submit = (event: React.FormEvent) => {
+    event.preventDefault();
+    if (
+      username.trim() !== expected.username ||
+      password !== expected.password
+    ) {
+      setError(
+        `That is not the demo login. Use ${expected.username} / ${expected.password}.`,
+      );
+      return;
+    }
+    setError(null);
+    setBusy(true);
+    window.setTimeout(() => {
+      signIn(role);
+      setBusy(false);
+      onDone();
+      router.push(expected.home);
+    }, 650);
+  };
+
+  return (
+    <form onSubmit={submit} className="mt-4 space-y-3.5">
+      <div className="space-y-1.5">
+        <Label htmlFor="username" className="text-navy-800">
+          Username
+        </Label>
+        <Input
+          id="username"
+          value={username}
+          autoComplete="username"
+          onChange={(e) => setUsername(e.target.value)}
+          className="h-10"
+        />
+      </div>
+      <div className="space-y-1.5">
+        <Label htmlFor="password" className="text-navy-800">
+          Password
+        </Label>
+        <div className="relative">
+          <Input
+            id="password"
+            type={reveal ? "text" : "password"}
+            value={password}
+            autoComplete="current-password"
+            onChange={(e) => setPassword(e.target.value)}
+            className="h-10 pr-10"
+          />
+          <button
+            type="button"
+            onClick={() => setReveal((r) => !r)}
+            aria-label={reveal ? "Hide password" : "Show password"}
+            className="absolute top-1/2 right-1 -translate-y-1/2 rounded-md p-2 text-navy-400 transition-colors hover:text-navy-700"
+          >
+            {reveal ? (
+              <EyeOff className="size-4" />
+            ) : (
+              <Eye className="size-4" />
+            )}
+          </button>
+        </div>
+      </div>
+
+      {error ? (
+        <p
+          role="alert"
+          className="rounded-lg bg-destructive/10 px-3 py-2 text-[0.8rem] font-medium text-destructive"
+        >
+          {error}
+        </p>
+      ) : null}
+
+      <Button
+        type="submit"
+        disabled={busy}
+        className={cn(
+          "h-11 w-full text-[0.9rem] font-semibold",
+          role === "educator"
+            ? "bg-gold-400 text-navy-900 hover:bg-gold-300"
+            : "bg-navy-900 text-white hover:bg-navy-800",
+        )}
+      >
+        {busy ? (
+          <>
+            <Loader2 className="size-4 animate-spin" />
+            Signing you in…
+          </>
+        ) : (
+          <>
+            <LogIn className="size-4" />
+            Log in
+          </>
+        )}
+      </Button>
+    </form>
   );
 }

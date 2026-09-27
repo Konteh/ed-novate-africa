@@ -4,16 +4,10 @@ import {
   createContext,
   useCallback,
   useContext,
-  useEffect,
   useMemo,
-  useState,
+  useSyncExternalStore,
 } from "react";
-import {
-  courses,
-  evidenceQueue,
-  initialPassport,
-  openRoles,
-} from "./data";
+import { courses, evidenceQueue, initialPassport, openRoles } from "./data";
 import type {
   ApplicationStage,
   DeliveryMode,
@@ -52,17 +46,21 @@ export interface Application {
   appliedOn: string;
 }
 
+type EvidenceOutcome = "queued" | "verified" | "returned";
+
 interface StoreState {
+  hydrated: boolean;
   session: Session | null;
   enrollments: Enrollment[];
   compass: CompassResult | null;
   passport: PassportEntry[];
   applications: Application[];
-  evidenceStatus: Record<string, "queued" | "verified" | "returned">;
+  evidenceStatus: Record<string, EvidenceOutcome>;
   sentFeedback: Record<string, string>;
 }
 
 const baseState: StoreState = {
+  hydrated: false,
   session: null,
   enrollments: [
     {
@@ -79,12 +77,85 @@ const baseState: StoreState = {
   ],
   evidenceStatus: Object.fromEntries(
     evidenceQueue.map((e) => [e.id, e.status]),
-  ) as Record<string, "queued" | "verified" | "returned">,
+  ) as Record<string, EvidenceOutcome>,
   sentFeedback: {},
 };
 
+/**
+ * The prototype keeps its whole world in one external store so that a reader
+ * can navigate, enrol, submit evidence and come back later without a backend.
+ * `useSyncExternalStore` lets the server render `baseState` and the browser
+ * swap in the persisted copy after hydration, with no mismatch.
+ */
+let state: StoreState = baseState;
+let persistedState: StoreState | null = null;
+const listeners = new Set<() => void>();
+
+function readPersisted(): StoreState {
+  if (persistedState) return persistedState;
+  let next: StoreState = { ...baseState, hydrated: true };
+  try {
+    const raw = window.localStorage.getItem(STORAGE_KEY);
+    if (raw) {
+      next = { ...next, ...(JSON.parse(raw) as Partial<StoreState>) };
+    }
+  } catch {
+    // A corrupt or unavailable store just means the demo starts fresh.
+  }
+  next.hydrated = true;
+  persistedState = next;
+  return next;
+}
+
+function persist() {
+  try {
+    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  } catch {
+    // Private-mode browsers block writes; the demo still works in memory.
+  }
+}
+
+function emit() {
+  for (const listener of listeners) listener();
+}
+
+function subscribe(listener: () => void) {
+  if (!state.hydrated) {
+    state = readPersisted();
+    emit();
+  }
+  listeners.add(listener);
+  return () => {
+    listeners.delete(listener);
+  };
+}
+
+function getSnapshot() {
+  return state;
+}
+
+function getServerSnapshot() {
+  return baseState;
+}
+
+function update(updater: (prev: StoreState) => StoreState) {
+  const next = updater(state);
+  if (next === state) return;
+  state = next;
+  persistedState = next;
+  persist();
+  emit();
+}
+
+function todayLabel() {
+  return new Date().toLocaleDateString("en-GB", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
+}
+
 interface StoreValue extends StoreState {
-  hydrated: boolean;
   signIn: (role: Role) => void;
   signOut: () => void;
   enroll: (slug: string, mode: DeliveryMode) => void;
@@ -104,42 +175,15 @@ interface StoreValue extends StoreState {
 
 const PlatformContext = createContext<StoreValue | null>(null);
 
-function todayLabel() {
-  return new Date().toLocaleDateString("en-GB", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  });
-}
-
 export function PlatformProvider({ children }: { children: React.ReactNode }) {
-  const [state, setState] = useState<StoreState>(baseState);
-  const [hydrated, setHydrated] = useState(false);
-
-  useEffect(() => {
-    try {
-      const raw = window.localStorage.getItem(STORAGE_KEY);
-      if (raw) {
-        const parsed = JSON.parse(raw) as Partial<StoreState>;
-        setState((prev) => ({ ...prev, ...parsed }));
-      }
-    } catch {
-      // A corrupt or unavailable store just means the demo starts fresh.
-    }
-    setHydrated(true);
-  }, []);
-
-  useEffect(() => {
-    if (!hydrated) return;
-    try {
-      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-    } catch {
-      // Private-mode browsers block writes; the demo still works in memory.
-    }
-  }, [state, hydrated]);
+  const snapshot = useSyncExternalStore(
+    subscribe,
+    getSnapshot,
+    getServerSnapshot,
+  );
 
   const signIn = useCallback((role: Role) => {
-    setState((prev) => ({
+    update((prev) => ({
       ...prev,
       session: {
         role,
@@ -149,11 +193,11 @@ export function PlatformProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const signOut = useCallback(() => {
-    setState((prev) => ({ ...prev, session: null }));
+    update((prev) => ({ ...prev, session: null }));
   }, []);
 
   const enroll = useCallback((slug: string, mode: DeliveryMode) => {
-    setState((prev) => {
+    update((prev) => {
       if (prev.enrollments.some((e) => e.slug === slug)) {
         return {
           ...prev,
@@ -173,14 +217,13 @@ export function PlatformProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const setCompass = useCallback((result: CompassResult | null) => {
-    setState((prev) => ({ ...prev, compass: result }));
+    update((prev) => ({ ...prev, compass: result }));
   }, []);
 
   const submitEvidence = useCallback(
     (competency: string, title: string, summary: string) => {
-      setState((prev) => {
-        const existing = prev.passport.find((p) => p.competency === competency);
-        if (existing) {
+      update((prev) => {
+        if (prev.passport.some((p) => p.competency === competency)) {
           return {
             ...prev,
             passport: prev.passport.map((p) =>
@@ -196,7 +239,7 @@ export function PlatformProvider({ children }: { children: React.ReactNode }) {
             ),
           };
         }
-        const course =
+        const courseSlug =
           courses.find((c) => c.skills.includes(competency))?.slug ??
           "data-analytics-foundations";
         return {
@@ -206,7 +249,7 @@ export function PlatformProvider({ children }: { children: React.ReactNode }) {
             {
               id: `pp-${Date.now()}`,
               competency,
-              courseSlug: course,
+              courseSlug,
               evidenceTitle: title,
               evidenceSummary: summary,
               status: "in-review",
@@ -221,7 +264,7 @@ export function PlatformProvider({ children }: { children: React.ReactNode }) {
   );
 
   const apply = useCallback((roleId: string) => {
-    setState((prev) => {
+    update((prev) => {
       if (prev.applications.some((a) => a.roleId === roleId)) return prev;
       return {
         ...prev,
@@ -235,7 +278,7 @@ export function PlatformProvider({ children }: { children: React.ReactNode }) {
 
   const reviewEvidence = useCallback(
     (id: string, outcome: "verified" | "returned", feedback: string) => {
-      setState((prev) => ({
+      update((prev) => ({
         ...prev,
         evidenceStatus: { ...prev.evidenceStatus, [id]: outcome },
         sentFeedback: { ...prev.sentFeedback, [id]: feedback },
@@ -245,34 +288,33 @@ export function PlatformProvider({ children }: { children: React.ReactNode }) {
   );
 
   const resetDemo = useCallback(() => {
-    setState({ ...baseState, session: null });
     try {
       window.localStorage.removeItem(STORAGE_KEY);
     } catch {
       // Nothing to clear.
     }
+    update(() => ({ ...baseState, hydrated: true }));
   }, []);
 
   const value = useMemo<StoreValue>(
     () => ({
-      ...state,
-      hydrated,
+      ...snapshot,
       signIn,
       signOut,
       enroll,
-      isEnrolled: (slug) => state.enrollments.some((e) => e.slug === slug),
-      enrollmentFor: (slug) => state.enrollments.find((e) => e.slug === slug),
+      isEnrolled: (slug) => snapshot.enrollments.some((e) => e.slug === slug),
+      enrollmentFor: (slug) =>
+        snapshot.enrollments.find((e) => e.slug === slug),
       setCompass,
       submitEvidence,
       apply,
       applicationFor: (roleId) =>
-        state.applications.find((a) => a.roleId === roleId),
+        snapshot.applications.find((a) => a.roleId === roleId),
       reviewEvidence,
       resetDemo,
     }),
     [
-      state,
-      hydrated,
+      snapshot,
       signIn,
       signOut,
       enroll,
