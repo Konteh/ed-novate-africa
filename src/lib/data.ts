@@ -673,9 +673,9 @@ export const openRoles: Role_[] = [
     mode: "Onsite",
     salaryGMD: "D12,500 – D15,000 / month",
     posted: "1 week ago",
-    requires: ["Data storytelling", "Spreadsheet modelling", "Stakeholder review"],
+    requires: ["Data profiling", "Data cleaning", "Data storytelling"],
     rationale:
-      "Your capstone decision memo is exactly the artefact this team asks candidates to produce in their second interview.",
+      "Your profiling and cleaning evidence got you the introduction. The storytelling competency is the one they will probe, so finish the capstone memo before the interview.",
     trackFit: "data",
   },
   {
