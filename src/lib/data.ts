@@ -1276,7 +1276,7 @@ export const journeySteps = [
     short: "AI recommends your path",
     href: "/student/compass",
     detail:
-      "A counsellor that asks about your background, your constraints and what you actually want, then names a track and the first course in it.",
+      "Five questions about your background and your constraints, then a track and the first course in it.",
   },
   {
     id: "studio",
@@ -1284,7 +1284,7 @@ export const journeySteps = [
     short: "Hybrid, hands-on courses",
     href: "/student/studio",
     detail:
-      "Nine courses, each available onsite, live with a tutor, or self-paced. Mastery-based: a module closes when you can do the thing, not when the week ends.",
+      "Nine courses, each available onsite, live with a tutor, or self-paced. A module closes when you can do the thing.",
   },
   {
     id: "passport",
@@ -1292,7 +1292,7 @@ export const journeySteps = [
     short: "Verify what you can do",
     href: "/student/passport",
     detail:
-      "Every competency is backed by an artefact a human tutor reviewed. One record that grows instead of resetting with each course.",
+      "Every skill is backed by work a tutor reviewed. One record that grows instead of resetting each course.",
   },
   {
     id: "bridge",
@@ -1300,7 +1300,7 @@ export const journeySteps = [
     short: "Match to real employers",
     href: "/student/bridge",
     detail:
-      "Employers search verified competencies, not degree names. Each match comes with the reason it was made.",
+      "Employers search verified skills, not degree names. Every match shows the reason it was made.",
   },
   {
     id: "intelligence",
@@ -1308,7 +1308,7 @@ export const journeySteps = [
     short: "Data feeds back to ECOWAS",
     href: "/educator/intelligence",
     detail:
-      "Anonymised supply-and-demand signals per country, so educators and ministries can see which gaps are actually widening.",
+      "Anonymised supply and demand per country, so educators and ministries see which gaps are widening.",
   },
 ];
 

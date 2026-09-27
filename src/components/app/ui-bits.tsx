@@ -3,28 +3,27 @@ import { cn } from "@/lib/utils";
 import type { CompetencyStatus } from "@/lib/types";
 
 export function PageHeader({
-  eyebrow,
   title,
   description,
   action,
 }: {
-  eyebrow: string;
   title: string;
-  description: string;
+  description?: string;
   action?: React.ReactNode;
 }) {
   return (
-    <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-      <div className="max-w-2xl">
-        <p className="eyebrow text-gold-600">{eyebrow}</p>
-        <h1 className="mt-2 font-heading text-[1.7rem] leading-tight font-extrabold text-navy-900 sm:text-[2rem]">
+    <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+      <div className="min-w-0">
+        <h1 className="text-[1.45rem] leading-tight font-semibold sm:text-[1.6rem]">
           {title}
         </h1>
-        <p className="mt-2.5 text-[0.95rem] leading-relaxed text-navy-500">
-          {description}
-        </p>
+        {description ? (
+          <p className="mt-1 text-sm text-ink-500">{description}</p>
+        ) : null}
       </div>
-      {action ? <div className="shrink-0">{action}</div> : null}
+      {action ? (
+        <div className="flex shrink-0 items-center gap-2">{action}</div>
+      ) : null}
     </div>
   );
 }
@@ -39,7 +38,7 @@ export function Panel({
   return (
     <section
       className={cn(
-        "rounded-2xl bg-white p-5 ring-1 ring-navy-100 sm:p-6",
+        "rounded-xl border border-ink-200 bg-white shadow-card",
         className,
       )}
     >
@@ -50,101 +49,61 @@ export function Panel({
 
 export function PanelTitle({
   title,
-  hint,
   action,
+  className,
 }: {
   title: string;
-  hint?: string;
   action?: React.ReactNode;
+  className?: string;
 }) {
   return (
-    <div className="mb-4 flex items-start justify-between gap-4">
-      <div>
-        <h2 className="font-heading text-[1.05rem] font-bold text-navy-900">
-          {title}
-        </h2>
-        {hint ? (
-          <p className="mt-1 text-[0.85rem] leading-relaxed text-navy-500">
-            {hint}
-          </p>
-        ) : null}
-      </div>
+    <div
+      className={cn(
+        "flex items-center justify-between gap-3 border-b border-ink-200 px-5 py-3",
+        className,
+      )}
+    >
+      <h2 className="text-sm font-semibold">{title}</h2>
       {action ? <div className="shrink-0">{action}</div> : null}
     </div>
   );
 }
 
-export function StatTile({
-  label,
-  value,
-  sub,
-  icon: Icon,
-  tone = "default",
+/**
+ * Stats read as one strip rather than a row of separate cards, so the numbers
+ * line up and the page has one less box in it.
+ */
+export function StatRow({
+  items,
+  className,
 }: {
-  label: string;
-  value: string | number;
-  sub?: string;
-  icon?: LucideIcon;
-  tone?: "default" | "gold" | "teal" | "navy";
+  items: { label: string; value: string | number }[];
+  className?: string;
 }) {
   return (
-    <div
+    <dl
       className={cn(
-        "rounded-2xl p-5 ring-1",
-        tone === "navy"
-          ? "bg-navy-900 ring-navy-900"
-          : "bg-white ring-navy-100",
+        "grid grid-cols-2 divide-ink-200 overflow-hidden rounded-xl border border-ink-200 bg-white shadow-card sm:divide-x",
+        items.length >= 4 ? "sm:grid-cols-4" : "sm:grid-cols-3",
+        className,
       )}
     >
-      <div className="flex items-start justify-between gap-3">
-        <p
-          className={cn(
-            "text-[0.78rem] font-semibold",
-            tone === "navy" ? "text-navy-200" : "text-navy-500",
-          )}
-        >
-          {label}
-        </p>
-        {Icon ? (
-          <span
-            className={cn(
-              "grid size-8 shrink-0 place-items-center rounded-lg",
-              tone === "gold" && "bg-gold-100 text-gold-700",
-              tone === "teal" && "bg-teal-100 text-teal-700",
-              tone === "navy" && "bg-white/10 text-gold-300",
-              tone === "default" && "bg-navy-50 text-navy-600",
-            )}
-          >
-            <Icon className="size-4" />
-          </span>
-        ) : null}
-      </div>
-      <p
-        className={cn(
-          "mt-3 font-heading text-[1.85rem] leading-none font-extrabold",
-          tone === "navy" ? "text-white" : "text-navy-900",
-        )}
-      >
-        {value}
-      </p>
-      {sub ? (
-        <p
-          className={cn(
-            "mt-2 text-[0.78rem] leading-snug",
-            tone === "navy" ? "text-navy-300" : "text-navy-400",
-          )}
-        >
-          {sub}
-        </p>
-      ) : null}
-    </div>
+      {items.map((item) => (
+        <div key={item.label} className="px-5 py-4">
+          <dt className="text-xs font-medium text-ink-500">{item.label}</dt>
+          <dd className="mt-1 text-[1.6rem] leading-none font-semibold tabular-nums">
+            {item.value}
+          </dd>
+        </div>
+      ))}
+    </dl>
   );
 }
 
 const statusStyles: Record<CompetencyStatus, string> = {
-  verified: "bg-teal-100 text-teal-700",
-  "in-review": "bg-gold-100 text-gold-700",
-  "not-started": "bg-navy-100 text-navy-500",
+  verified: "bg-ok-50 text-ok-600",
+  "in-review": "bg-warn-50 text-warn-600",
+  "not-started": "bg-ink-100 text-ink-500",
 };
 
 const statusLabels: Record<CompetencyStatus, string> = {
@@ -163,7 +122,7 @@ export function StatusPill({
   return (
     <span
       className={cn(
-        "inline-flex shrink-0 items-center rounded-full px-2.5 py-1 text-[0.68rem] font-bold tracking-wide uppercase",
+        "inline-flex shrink-0 items-center rounded-full px-2 py-0.5 text-xs font-medium",
         statusStyles[status],
         className,
       )}
@@ -179,17 +138,17 @@ export function Tag({
   className,
 }: {
   children: React.ReactNode;
-  tone?: "default" | "gold" | "teal" | "outline";
+  tone?: "default" | "accent" | "ok" | "outline";
   className?: string;
 }) {
   return (
     <span
       className={cn(
-        "inline-flex items-center rounded-full px-2.5 py-1 text-[0.72rem] font-medium",
-        tone === "default" && "bg-navy-50 text-navy-700",
-        tone === "gold" && "bg-gold-100 text-gold-700",
-        tone === "teal" && "bg-teal-100 text-teal-700",
-        tone === "outline" && "text-navy-600 ring-1 ring-navy-200",
+        "inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium",
+        tone === "default" && "bg-ink-100 text-ink-600",
+        tone === "accent" && "bg-gold-100 text-gold-700",
+        tone === "ok" && "bg-ok-50 text-ok-600",
+        tone === "outline" && "border border-ink-200 text-ink-600",
         className,
       )}
     >
@@ -206,21 +165,17 @@ export function EmptyState({
 }: {
   icon: LucideIcon;
   title: string;
-  body: string;
+  body?: string;
   action?: React.ReactNode;
 }) {
   return (
-    <div className="flex flex-col items-center rounded-2xl border border-dashed border-navy-200 bg-navy-50/40 px-6 py-12 text-center">
-      <span className="grid size-12 place-items-center rounded-full bg-white text-navy-400 ring-1 ring-navy-100">
-        <Icon className="size-5" />
-      </span>
-      <h3 className="mt-4 font-heading text-[1.05rem] font-bold text-navy-900">
-        {title}
-      </h3>
-      <p className="mt-2 max-w-md text-[0.88rem] leading-relaxed text-navy-500">
-        {body}
-      </p>
-      {action ? <div className="mt-5">{action}</div> : null}
+    <div className="flex flex-col items-center px-6 py-14 text-center">
+      <Icon className="size-5 text-ink-400" />
+      <h3 className="mt-3 text-sm font-semibold">{title}</h3>
+      {body ? (
+        <p className="mt-1 max-w-sm text-sm text-ink-500">{body}</p>
+      ) : null}
+      {action ? <div className="mt-4">{action}</div> : null}
     </div>
   );
 }

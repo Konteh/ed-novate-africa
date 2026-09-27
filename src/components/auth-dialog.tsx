@@ -16,7 +16,6 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Mark } from "@/components/brand";
 import { usePlatform } from "@/lib/platform-store";
 import type { Role } from "@/lib/types";
-import { cn } from "@/lib/utils";
 
 const credentials: Record<
   Role,
@@ -25,13 +24,13 @@ const credentials: Record<
   student: {
     username: "student",
     password: "student2026",
-    blurb: "Sign in to continue your learning path",
+    blurb: "Continue your learning path",
     home: "/student",
   },
   educator: {
     username: "educator",
     password: "educator2026",
-    blurb: "Sign in to review your cohort and evidence queue",
+    blurb: "Review your cohort and evidence queue",
     home: "/educator",
   },
 };
@@ -56,7 +55,7 @@ export function AuthDialog({
         <div className="flex items-center justify-between bg-navy-900 px-5 py-3.5">
           <span className="flex items-center gap-2.5">
             <Mark className="size-8 bg-white/10 ring-1 ring-white/15" />
-            <span className="font-heading text-sm font-bold text-white">
+            <span className="text-sm font-semibold text-white">
               Ed-Novate <span className="text-gold-300">Africa</span>
             </span>
           </span>
@@ -71,10 +70,8 @@ export function AuthDialog({
         </div>
 
         <div className="p-5">
-          <DialogTitle className="text-xl font-bold text-navy-900">
-            Log in to your account
-          </DialogTitle>
-          <DialogDescription className="mt-1 text-navy-500">
+          <DialogTitle className="text-lg font-semibold">Log in</DialogTitle>
+          <DialogDescription className="mt-1 text-sm text-ink-500">
             {credentials[role].blurb}
           </DialogDescription>
 
@@ -93,13 +90,12 @@ export function AuthDialog({
             </TabsList>
           </Tabs>
 
-          <div className="mt-4 rounded-lg bg-navy-50 px-3.5 py-2.5 text-[0.8rem] text-navy-700 ring-1 ring-navy-100">
-            <span className="font-semibold">Demo login —</span> username{" "}
-            <code className="rounded bg-white px-1 py-0.5 font-mono text-[0.75rem] text-navy-900">
+          <div className="mt-4 rounded-lg border border-ink-200 bg-ink-50 px-3.5 py-2.5 text-sm text-ink-600">
+            Demo login{" "}
+            <code className="rounded bg-white px-1 py-0.5 font-mono text-xs text-ink-900">
               {credentials[role].username}
             </code>{" "}
-            · password{" "}
-            <code className="rounded bg-white px-1 py-0.5 font-mono text-[0.75rem] text-navy-900">
+            <code className="rounded bg-white px-1 py-0.5 font-mono text-xs text-ink-900">
               {credentials[role].password}
             </code>
           </div>
@@ -110,10 +106,6 @@ export function AuthDialog({
             onDone={() => onOpenChange(false)}
           />
 
-          <p className="mt-4 text-[0.72rem] leading-relaxed text-navy-400">
-            Prototype note: this sign-in is illustrative. The demo username and
-            password above are pre-filled, so you can just press Log in.
-          </p>
         </div>
       </DialogContent>
     </Dialog>
@@ -137,7 +129,7 @@ function LoginForm({ role, onDone }: { role: Role; onDone: () => void }) {
       password !== expected.password
     ) {
       setError(
-        `That is not the demo login. Use ${expected.username} / ${expected.password}.`,
+        `Use ${expected.username} / ${expected.password}.`,
       );
       return;
     }
@@ -154,9 +146,7 @@ function LoginForm({ role, onDone }: { role: Role; onDone: () => void }) {
   return (
     <form onSubmit={submit} className="mt-4 space-y-3.5">
       <div className="space-y-1.5">
-        <Label htmlFor="username" className="text-navy-800">
-          Username
-        </Label>
+        <Label htmlFor="username">Username</Label>
         <Input
           id="username"
           value={username}
@@ -166,9 +156,7 @@ function LoginForm({ role, onDone }: { role: Role; onDone: () => void }) {
         />
       </div>
       <div className="space-y-1.5">
-        <Label htmlFor="password" className="text-navy-800">
-          Password
-        </Label>
+        <Label htmlFor="password">Password</Label>
         <div className="relative">
           <Input
             id="password"
@@ -182,7 +170,7 @@ function LoginForm({ role, onDone }: { role: Role; onDone: () => void }) {
             type="button"
             onClick={() => setReveal((r) => !r)}
             aria-label={reveal ? "Hide password" : "Show password"}
-            className="absolute top-1/2 right-1 -translate-y-1/2 rounded-md p-2 text-navy-400 transition-colors hover:text-navy-700"
+            className="absolute top-1/2 right-1 -translate-y-1/2 rounded-md p-2 text-ink-400 transition-colors hover:bg-ink-100 hover:text-ink-700"
           >
             {reveal ? (
               <EyeOff className="size-4" />
@@ -196,7 +184,7 @@ function LoginForm({ role, onDone }: { role: Role; onDone: () => void }) {
       {error ? (
         <p
           role="alert"
-          className="rounded-lg bg-destructive/10 px-3 py-2 text-[0.8rem] font-medium text-destructive"
+          className="rounded-lg bg-destructive/10 px-3 py-2 text-sm font-medium text-destructive"
         >
           {error}
         </p>
@@ -205,12 +193,9 @@ function LoginForm({ role, onDone }: { role: Role; onDone: () => void }) {
       <Button
         type="submit"
         disabled={busy}
-        className={cn(
-          "h-11 w-full text-[0.9rem] font-semibold",
-          role === "educator"
-            ? "bg-gold-400 text-navy-900 hover:bg-gold-300"
-            : "bg-navy-900 text-white hover:bg-navy-800",
-        )}
+        size="xl"
+        variant={role === "educator" ? "accent" : "default"}
+        className="w-full"
       >
         {busy ? (
           <>

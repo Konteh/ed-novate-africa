@@ -37,11 +37,11 @@ export function Wordmark({
     <span className={cn("flex items-center gap-2.5", className)}>
       <Mark />
       <span className="flex flex-col leading-none">
-        <span className="font-heading text-[0.97rem] font-bold tracking-tight text-navy-900">
-          Ed-Novate <span className="text-gold-500">Africa</span>
+        <span className="text-[0.95rem] font-semibold tracking-tight text-ink-900">
+          Ed-Novate <span className="text-gold-600">Africa</span>
         </span>
         {subtitle ? (
-          <span className="mt-1 text-[0.68rem] font-medium tracking-wide text-navy-400">
+          <span className="mt-1 text-[0.68rem] font-medium text-ink-400">
             {subtitle}
           </span>
         ) : null}
@@ -54,7 +54,7 @@ export function WordmarkLight({ className }: { className?: string }) {
   return (
     <span className={cn("flex items-center gap-2.5", className)}>
       <Mark className="bg-white/10 ring-1 ring-white/15" />
-      <span className="font-heading text-[0.97rem] font-bold tracking-tight text-white">
+      <span className="text-[0.95rem] font-semibold tracking-tight text-white">
         Ed-Novate <span className="text-gold-300">Africa</span>
       </span>
     </span>

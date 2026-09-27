@@ -8,35 +8,48 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-inter);
-  --font-heading: var(--font-jakarta);
   --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
 
-  --color-navy-50: #f2f6fb;
-  --color-navy-100: #e2ebf6;
-  --color-navy-200: #c3d6ea;
-  --color-navy-300: #93b4d6;
-  --color-navy-400: #5b8bbc;
-  --color-navy-500: #376da3;
-  --color-navy-600: #275688;
-  --color-navy-700: #1d4269;
-  --color-navy-800: #142f4d;
-  --color-navy-900: #0d2137;
-  --color-navy-950: #071624;
+  /* Neutral scale carries text, borders and surfaces. Keeping it off the
+     brand hue stops every pixel from reading navy. */
+  --color-ink-50: #f7f8fa;
+  --color-ink-100: #eff1f5;
+  --color-ink-200: #e2e6ec;
+  --color-ink-300: #cbd2dc;
+  --color-ink-400: #9aa4b3;
+  --color-ink-500: #6d7787;
+  --color-ink-600: #4e5765;
+  --color-ink-700: #3a424f;
+  --color-ink-800: #262d38;
+  --color-ink-900: #161b23;
 
-  --color-gold-50: #fdf8ec;
+  /* Brand. Used for primary actions, the sidebar and the mark. */
+  --color-navy-50: #f1f5fa;
+  --color-navy-100: #e0e9f4;
+  --color-navy-200: #c2d4e8;
+  --color-navy-300: #92b2d3;
+  --color-navy-400: #5a88b9;
+  --color-navy-500: #36699f;
+  --color-navy-600: #275285;
+  --color-navy-700: #1d3f66;
+  --color-navy-800: #142d4a;
+  --color-navy-900: #0d2035;
+  --color-navy-950: #071522;
+
+  /* Accent. One colour, used sparingly. */
   --color-gold-100: #faeecd;
-  --color-gold-200: #f5dc9c;
-  --color-gold-300: #eec462;
-  --color-gold-400: #e9ae37;
-  --color-gold-500: #d9911c;
-  --color-gold-600: #b76e14;
-  --color-gold-700: #925115;
-  --color-gold-800: #794018;
-  --color-gold-900: #683617;
+  --color-gold-200: #f4dc9d;
+  --color-gold-300: #edc563;
+  --color-gold-400: #e5ad35;
+  --color-gold-500: #cf8f1b;
+  --color-gold-600: #a96d13;
+  --color-gold-700: #855316;
 
-  --color-teal-100: #cdece7;
-  --color-teal-500: #178a7a;
-  --color-teal-700: #0f5f55;
+  /* Status. Three states, deliberately quiet. */
+  --color-ok-50: #ecf6f1;
+  --color-ok-600: #12684c;
+  --color-warn-50: #fcf3e4;
+  --color-warn-600: #93601a;
 
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
@@ -67,86 +80,91 @@
   --color-popover: var(--popover);
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
+
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);
   --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) * 1.4);
-  --radius-2xl: calc(var(--radius) * 1.8);
-  --radius-3xl: calc(var(--radius) * 2.2);
-  --radius-4xl: calc(var(--radius) * 2.6);
+  --radius-xl: calc(var(--radius) * 1.3);
+  --radius-2xl: calc(var(--radius) * 1.6);
+  --radius-3xl: calc(var(--radius) * 2);
+
+  --shadow-card: 0 1px 2px rgba(16, 24, 40, 0.04);
+  --shadow-lift: 0 10px 28px -18px rgba(16, 24, 40, 0.35);
+  --shadow-pop: 0 20px 48px -24px rgba(16, 24, 40, 0.3);
 }
 
 :root {
-  --radius: 0.75rem;
+  --radius: 0.625rem;
 
   --background: #ffffff;
-  --foreground: #0d2137;
+  --foreground: #161b23;
   --card: #ffffff;
-  --card-foreground: #0d2137;
+  --card-foreground: #161b23;
   --popover: #ffffff;
-  --popover-foreground: #0d2137;
-  --primary: #142f4d;
+  --popover-foreground: #161b23;
+  --primary: #0d2035;
   --primary-foreground: #ffffff;
-  --secondary: #f2f6fb;
-  --secondary-foreground: #142f4d;
-  --muted: #f4f6f9;
-  --muted-foreground: #5c7288;
-  --accent: #e9ae37;
-  --accent-foreground: #3c2708;
-  --destructive: #c8452f;
-  --border: #e2e8ef;
-  --input: #dbe3ec;
-  --ring: #376da3;
-  --chart-1: #142f4d;
-  --chart-2: #e9ae37;
-  --chart-3: #376da3;
-  --chart-4: #178a7a;
-  --chart-5: #93b4d6;
-  --sidebar: #0d2137;
-  --sidebar-foreground: #c3d6ea;
-  --sidebar-primary: #e9ae37;
-  --sidebar-primary-foreground: #0d2137;
-  --sidebar-accent: #142f4d;
+  --secondary: #f7f8fa;
+  --secondary-foreground: #262d38;
+  --muted: #f7f8fa;
+  --muted-foreground: #6d7787;
+  --accent: #f7f8fa;
+  --accent-foreground: #262d38;
+  --destructive: #c0392b;
+  --border: #e2e6ec;
+  --input: #cbd2dc;
+  --ring: #36699f;
+  --chart-1: #0d2035;
+  --chart-2: #e5ad35;
+  --chart-3: #36699f;
+  --chart-4: #12684c;
+  --chart-5: #9aa4b3;
+  --sidebar: #0d2035;
+  --sidebar-foreground: #c2d4e8;
+  --sidebar-primary: #e5ad35;
+  --sidebar-primary-foreground: #0d2035;
+  --sidebar-accent: #142d4a;
   --sidebar-accent-foreground: #ffffff;
-  --sidebar-border: #1d4269;
-  --sidebar-ring: #376da3;
+  --sidebar-border: #1d3f66;
+  --sidebar-ring: #36699f;
 }
 
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
-  body {
-    @apply bg-background text-foreground;
-    -webkit-font-smoothing: antialiased;
-  }
   html {
     @apply font-sans;
     scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-background text-foreground;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
   }
   h1,
   h2,
   h3,
   h4 {
-    @apply font-heading tracking-tight;
+    @apply font-semibold tracking-[-0.011em] text-ink-900;
+  }
+  /* Anything clickable should say so. */
+  button:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]),
+  summary {
+    cursor: pointer;
   }
 }
 
-@utility eyebrow {
-  @apply text-[0.7rem] font-semibold uppercase tracking-[0.18em];
+/* A card that leads somewhere. Pairs with `group` on the wrapper. */
+@utility card-link {
+  @apply transition-[border-color,box-shadow,transform] duration-150 hover:border-ink-300 hover:shadow-lift focus-visible:ring-2 focus-visible:ring-navy-500/40 focus-visible:outline-none active:translate-y-px;
 }
 
-@utility surface-grid {
-  background-image:
-    linear-gradient(to right, rgba(19, 47, 77, 0.055) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(19, 47, 77, 0.055) 1px, transparent 1px);
-  background-size: 34px 34px;
-}
-
-@keyframes rise {
+@keyframes fade-up {
   from {
     opacity: 0;
-    transform: translateY(10px);
+    transform: translateY(6px);
   }
   to {
     opacity: 1;
@@ -154,6 +172,6 @@
   }
 }
 
-@utility animate-rise {
-  animation: rise 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+@utility animate-fade-up {
+  animation: fade-up 0.22s ease-out both;
 }

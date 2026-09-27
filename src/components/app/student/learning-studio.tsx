@@ -2,28 +2,19 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import {
-  ArrowRight,
-  Check,
-  Clock,
-  MapPin,
-  Search,
-  SearchX,
-  Star,
-  Users,
-} from "lucide-react";
+import { ArrowRight, Check, Search, SearchX, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { EmptyState, PageHeader, Tag } from "@/components/app/ui-bits";
+import { EmptyState, PageHeader, Panel, Tag } from "@/components/app/ui-bits";
 import { courses, modeLabels, tracks, trackById } from "@/lib/data";
 import { usePlatform } from "@/lib/platform-store";
 import type { DeliveryMode } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
 const modeFilters: { value: DeliveryMode | "all"; label: string }[] = [
-  { value: "all", label: "All ways to learn" },
+  { value: "all", label: "Any mode" },
   { value: "onsite", label: "Onsite" },
-  { value: "live", label: "Live tutor-led" },
+  { value: "live", label: "Live" },
   { value: "self-paced", label: "Self-paced" },
 ];
 
@@ -48,6 +39,8 @@ export function LearningStudio() {
     });
   }, [query, track, mode]);
 
+  const dirty = track !== "all" || mode !== "all" || query !== "";
+
   const clear = () => {
     setQuery("");
     setTrack("all");
@@ -55,26 +48,32 @@ export function LearningStudio() {
   };
 
   return (
-    <div className="space-y-6">
-      <PageHeader
-        eyebrow="Step 2 · Learning Studio"
-        title="Nine courses, three ways to learn"
-        description="Mastery-based: a module closes when you can do the thing, not when the week ends. Every course is available onsite, live with a tutor, or self-paced unless noted."
-      />
+    <div className="space-y-5">
+      <PageHeader title="Learning Studio" />
 
-      <div className="rounded-2xl bg-white p-4 ring-1 ring-navy-100 sm:p-5">
+      <div className="space-y-3">
         <div className="relative">
-          <Search className="absolute top-1/2 left-3 size-4 -translate-y-1/2 text-navy-400" />
+          <Search className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-ink-400" />
           <Input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search a course, a skill or a track — try “SQL” or “payments”"
-            className="h-11 pl-9"
+            placeholder="Search courses and skills"
+            className="h-10 bg-white pl-9"
             aria-label="Search courses"
           />
+          {query ? (
+            <button
+              type="button"
+              onClick={() => setQuery("")}
+              aria-label="Clear search"
+              className="absolute top-1/2 right-2 -translate-y-1/2 rounded-md p-1.5 text-ink-400 transition-colors hover:bg-ink-100 hover:text-ink-700"
+            >
+              <X className="size-3.5" />
+            </button>
+          ) : null}
         </div>
 
-        <div className="mt-4 flex flex-wrap gap-1.5">
+        <div className="-mx-4 flex gap-1.5 overflow-x-auto px-4 pb-1 sm:mx-0 sm:flex-wrap sm:px-0">
           <FilterPill
             active={track === "all"}
             onClick={() => setTrack("all")}
@@ -90,49 +89,41 @@ export function LearningStudio() {
           ))}
         </div>
 
-        <div className="mt-3 flex flex-wrap gap-1.5 border-t border-navy-100 pt-3">
+        <div className="flex flex-wrap items-center gap-1.5">
           {modeFilters.map((m) => (
             <FilterPill
               key={m.value}
               active={mode === m.value}
               onClick={() => setMode(m.value)}
               label={m.label}
-              tone="gold"
             />
           ))}
         </div>
       </div>
 
-      <div className="flex items-baseline justify-between">
-        <p className="text-[0.85rem] font-medium text-navy-500">
+      <div className="flex items-center justify-between">
+        <p className="text-sm text-ink-500">
           {filtered.length} course{filtered.length === 1 ? "" : "s"}
-          {compass ? (
-            <>
-              {" · "}
-              <span className="text-gold-600">
-                Compass recommended {trackById(compass.trackId).name}
-              </span>
-            </>
-          ) : null}
         </p>
-        {track !== "all" || mode !== "all" || query ? (
-          <Button variant="ghost" onClick={clear} className="h-8 text-navy-500">
+        {dirty ? (
+          <Button variant="ghost" size="sm" onClick={clear}>
             Clear filters
           </Button>
         ) : null}
       </div>
 
       {filtered.length === 0 ? (
-        <EmptyState
-          icon={SearchX}
-          title="Nothing matches that combination yet"
-          body="The catalogue is nine courses deep in this prototype. Try a broader track, or clear the delivery filter — some courses do not run onsite."
-          action={
-            <Button onClick={clear} className="h-10 bg-navy-900 px-4">
-              Clear the filters
-            </Button>
-          }
-        />
+        <Panel>
+          <EmptyState
+            icon={SearchX}
+            title="No courses match those filters"
+            action={
+              <Button size="sm" onClick={clear}>
+                Clear filters
+              </Button>
+            }
+          />
+        </Panel>
       ) : (
         <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
           {filtered.map((course) => {
@@ -143,63 +134,39 @@ export function LearningStudio() {
                 key={course.slug}
                 href={`/student/studio/${course.slug}`}
                 className={cn(
-                  "group flex flex-col rounded-2xl bg-white p-5 ring-1 transition-all hover:-translate-y-1 hover:shadow-[0_20px_44px_-26px_rgba(13,33,55,0.4)]",
-                  recommended ? "ring-2 ring-gold-300" : "ring-navy-100",
+                  "card-link group flex flex-col rounded-xl border bg-white p-5 shadow-card",
+                  recommended ? "border-gold-300" : "border-ink-200",
                 )}
               >
                 <div className="flex items-start justify-between gap-3">
-                  <Tag tone="gold">{trackById(course.track).name}</Tag>
+                  <Tag>{trackById(course.track).name}</Tag>
                   {enrolled ? (
-                    <span className="inline-flex shrink-0 items-center gap-1 rounded-full bg-teal-100 px-2 py-1 text-[0.68rem] font-bold tracking-wide text-teal-700 uppercase">
-                      <Check className="size-2.5" strokeWidth={4} />
+                    <Tag tone="ok" className="gap-1">
+                      <Check className="size-3" strokeWidth={3} />
                       Enrolled
-                    </span>
+                    </Tag>
                   ) : recommended ? (
-                    <span className="shrink-0 rounded-full bg-gold-400 px-2 py-1 text-[0.68rem] font-bold tracking-wide text-navy-900 uppercase">
-                      Recommended
-                    </span>
+                    <Tag tone="accent">Recommended</Tag>
                   ) : null}
                 </div>
 
-                <h3 className="mt-3.5 font-heading text-[1.1rem] leading-snug font-bold text-navy-900">
+                <h3 className="mt-3 text-base leading-snug font-semibold">
                   {course.title}
                 </h3>
-                <p className="mt-2 flex-1 text-[0.87rem] leading-relaxed text-navy-500">
+                <p className="mt-1.5 flex-1 text-sm leading-relaxed text-ink-500">
                   {course.blurb}
                 </p>
 
-                <div className="mt-4 flex flex-wrap gap-x-4 gap-y-2 text-[0.76rem] font-medium text-navy-500">
-                  <span className="flex items-center gap-1.5">
-                    <Clock className="size-3.5 text-navy-300" />
-                    {course.weeks} weeks · {course.hoursPerWeek}h/wk
-                  </span>
-                  <span className="flex items-center gap-1.5">
-                    <Users className="size-3.5 text-navy-300" />
-                    {course.learners.toLocaleString()} learners
-                  </span>
-                  <span className="flex items-center gap-1.5">
-                    <Star className="size-3.5 text-gold-400" />
-                    {course.rating.toFixed(1)}
-                  </span>
-                </div>
+                <p className="mt-4 text-xs text-ink-500">
+                  {course.weeks} weeks · {course.level} ·{" "}
+                  {course.modes.map((m) => modeLabels[m]).join(", ")}
+                </p>
 
-                <div className="mt-4 flex flex-wrap gap-1.5">
-                  {course.modes.map((m) => (
-                    <Tag key={m} tone="outline" className="text-[0.68rem]">
-                      {modeLabels[m]}
-                    </Tag>
-                  ))}
-                  <Tag tone="outline" className="text-[0.68rem]">
-                    {course.level}
-                  </Tag>
-                </div>
-
-                <div className="mt-4 flex items-center justify-between border-t border-navy-100 pt-3.5">
-                  <span className="flex items-center gap-1.5 text-[0.78rem] font-semibold text-navy-700">
-                    <MapPin className="size-3.5 text-navy-300" />
-                    {course.openRoles} open roles matched
+                <div className="mt-3.5 flex items-center justify-between border-t border-ink-200 pt-3.5">
+                  <span className="text-xs font-medium text-ink-600">
+                    {course.openRoles} open roles
                   </span>
-                  <ArrowRight className="size-4 text-navy-300 transition-transform group-hover:translate-x-0.5 group-hover:text-navy-700" />
+                  <ArrowRight className="size-4 text-ink-400 transition-transform duration-150 group-hover:translate-x-0.5 group-hover:text-ink-800" />
                 </div>
               </Link>
             );
@@ -214,12 +181,10 @@ function FilterPill({
   active,
   onClick,
   label,
-  tone = "navy",
 }: {
   active: boolean;
   onClick: () => void;
   label: string;
-  tone?: "navy" | "gold";
 }) {
   return (
     <button
@@ -227,12 +192,10 @@ function FilterPill({
       onClick={onClick}
       aria-pressed={active}
       className={cn(
-        "rounded-full px-3 py-1.5 text-[0.79rem] font-medium transition-colors",
+        "shrink-0 rounded-full border px-3 py-1.5 text-[0.8rem] font-medium transition-colors duration-150 outline-none focus-visible:ring-2 focus-visible:ring-navy-500/45",
         active
-          ? tone === "gold"
-            ? "bg-gold-400 text-navy-900"
-            : "bg-navy-900 text-white"
-          : "bg-navy-50 text-navy-600 hover:bg-navy-100",
+          ? "border-navy-900 bg-navy-900 text-white"
+          : "border-ink-200 bg-white text-ink-600 hover:border-ink-300 hover:text-ink-900",
       )}
     >
       {label}

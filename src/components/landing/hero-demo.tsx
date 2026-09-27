@@ -23,168 +23,147 @@ const stages = [
   { label: "Talent Bridge", icon: BriefcaseBusiness },
 ];
 
+const passportRows = [
+  { skill: "Data profiling", state: "Verified" },
+  { skill: "Data cleaning", state: "Verified" },
+  { skill: "SQL querying", state: "Verified" },
+  { skill: "Dashboard design", state: "In review" },
+  { skill: "Data storytelling", state: "Not started" },
+];
+
 export function HeroDemo() {
   const [stage, setStage] = useState(0);
+  const [paused, setPaused] = useState(false);
 
+  // The preview cycles on its own, but hands control over for good once
+  // someone picks a stage themselves.
   useEffect(() => {
+    if (paused) return;
     const timer = window.setInterval(() => {
-      setStage((s) => (s + 1) % 3);
-    }, 3800);
+      setStage((s) => (s + 1) % stages.length);
+    }, 4200);
     return () => window.clearInterval(timer);
-  }, []);
+  }, [paused]);
+
+  const select = (i: number) => {
+    setPaused(true);
+    setStage(i);
+  };
 
   return (
-    <div className="relative">
-      <div
-        aria-hidden
-        className="absolute -inset-6 -z-10 rounded-[2.5rem] bg-gradient-to-br from-navy-100 via-navy-50 to-gold-50"
-      />
-      <div
-        aria-hidden
-        className="absolute -top-5 -right-4 -z-10 size-28 rounded-full bg-gold-200/70 blur-2xl"
-      />
-
-      <div className="overflow-hidden rounded-2xl bg-white shadow-[0_24px_60px_-28px_rgba(13,33,55,0.4)] ring-1 ring-navy-900/10">
-        <div className="flex items-center justify-between border-b border-navy-100 bg-navy-50/60 px-4 py-3">
-          <div className="flex items-center gap-1.5">
-            {stages.map((s, i) => (
-              <button
-                key={s.label}
-                type="button"
-                onClick={() => setStage(i)}
-                className={cn(
-                  "flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[0.7rem] font-semibold transition-all",
-                  i === stage
-                    ? "bg-navy-900 text-white"
-                    : "text-navy-400 hover:bg-white hover:text-navy-700",
-                )}
-              >
-                <s.icon className="size-3" />
-                <span className={cn(i === stage ? "inline" : "hidden sm:inline")}>
-                  {s.label}
-                </span>
-              </button>
-            ))}
-          </div>
-          <span className="flex items-center gap-1 rounded-full bg-teal-100 px-2 py-0.5 text-[0.65rem] font-bold tracking-wide text-teal-700 uppercase">
-            <Check className="size-2.5" strokeWidth={4} />
-            Verified
-          </span>
+    <div>
+      <div className="overflow-hidden rounded-2xl border border-ink-200 bg-white shadow-pop">
+        <div className="flex items-center gap-1 border-b border-ink-200 bg-ink-50 px-3 py-2.5">
+          {stages.map((s, i) => (
+            <button
+              key={s.label}
+              type="button"
+              aria-pressed={i === stage}
+              onClick={() => select(i)}
+              className={cn(
+                "flex items-center gap-1.5 rounded-full px-2.5 py-1.5 text-xs font-medium transition-colors duration-150 outline-none focus-visible:ring-2 focus-visible:ring-navy-500/45",
+                i === stage
+                  ? "bg-navy-900 text-white"
+                  : "text-ink-500 hover:bg-white hover:text-ink-800",
+              )}
+            >
+              <s.icon className="size-3.5" />
+              <span className={i === stage ? "inline" : "hidden sm:inline"}>
+                {s.label}
+              </span>
+            </button>
+          ))}
         </div>
 
-        <div className="min-h-[19rem] p-5">
+        <div className="min-h-[18rem] p-5">
           {stage === 0 ? (
-            <div key="s0" className="animate-rise space-y-4">
+            <div key="s0" className="animate-fade-up space-y-4">
               <div className="flex items-start gap-2.5">
                 <span className="grid size-7 shrink-0 place-items-center rounded-full bg-navy-900 text-white">
                   <Sparkles className="size-3.5" />
                 </span>
-                <div className="rounded-xl rounded-tl-sm bg-navy-50 px-3.5 py-2.5 text-[0.82rem] leading-relaxed text-navy-800">
-                  <p className="font-semibold">What excites you about tech?</p>
-                  <p className="mt-1 text-navy-500">
-                    Pick the one closest to true. We will narrow it down together.
-                  </p>
-                </div>
+                <p className="rounded-xl rounded-tl-sm bg-ink-100 px-3.5 py-2.5 text-sm font-medium text-ink-800">
+                  What excites you about tech?
+                </p>
               </div>
-              <div className="flex flex-wrap gap-2 pl-9">
+              <div className="flex flex-wrap gap-2 pl-9.5">
                 {options.map((option, i) => (
                   <span
                     key={option}
                     className={cn(
-                      "rounded-full px-3 py-1.5 text-[0.78rem] font-medium ring-1 transition-all",
+                      "rounded-full border px-3 py-1.5 text-xs font-medium",
                       i === 0
-                        ? "bg-navy-900 text-white ring-navy-900"
-                        : "bg-white text-navy-500 ring-navy-200",
+                        ? "border-navy-900 bg-navy-900 text-white"
+                        : "border-ink-200 text-ink-500",
                     )}
                   >
                     {option}
-                    {i === 0 ? (
-                      <Check className="ml-1.5 inline size-3" strokeWidth={3} />
-                    ) : null}
                   </span>
                 ))}
               </div>
-              <div className="ml-9 rounded-xl border border-dashed border-navy-200 bg-white p-3.5">
-                <p className="eyebrow text-navy-400">Recommended track</p>
-                <p className="mt-1.5 flex items-center gap-2 font-heading text-lg font-bold text-navy-900">
+              <div className="ml-9.5 rounded-xl border border-ink-200 p-4">
+                <p className="text-xs text-ink-500">Recommended track</p>
+                <p className="mt-1 flex items-center gap-2 text-lg font-semibold">
                   Data Analytics
-                  <Check
-                    className="size-4 text-teal-500"
-                    strokeWidth={3.5}
-                  />
+                  <Check className="size-4 text-ok-600" strokeWidth={3} />
                 </p>
-                <p className="mt-1 text-[0.78rem] text-navy-500">
-                  Start with Data Analytics Foundations, onsite in Kanifing —
-                  12 weeks, 37 open roles matched to it today.
+                <p className="mt-1.5 text-xs leading-relaxed text-ink-500">
+                  Start with Data Analytics Foundations, onsite in Kanifing.
                 </p>
               </div>
             </div>
           ) : null}
 
           {stage === 1 ? (
-            <div key="s1" className="animate-rise space-y-3">
-              <div className="flex items-center justify-between">
-                <p className="eyebrow text-navy-400">Skills Passport</p>
-                <span className="text-[0.72rem] font-medium text-navy-400">
+            <div key="s1" className="animate-fade-up space-y-2">
+              <div className="flex items-center justify-between pb-1">
+                <p className="text-xs font-medium text-ink-500">
+                  Skills Passport
+                </p>
+                <span className="text-xs text-ink-400 tabular-nums">
                   ENA-GM-2026-04182
                 </span>
               </div>
-              {[
-                { skill: "Data profiling", state: "Verified" },
-                { skill: "Data cleaning", state: "Verified" },
-                { skill: "SQL querying", state: "Verified" },
-                { skill: "Dashboard design", state: "In review" },
-                { skill: "Data storytelling", state: "Not started" },
-              ].map((row) => (
+              {passportRows.map((row) => (
                 <div
                   key={row.skill}
-                  className="flex items-center justify-between rounded-lg bg-navy-50/70 px-3 py-2.5"
+                  className="flex items-center justify-between rounded-lg bg-ink-50 px-3 py-2.5"
                 >
-                  <span className="text-[0.82rem] font-medium text-navy-800">
+                  <span className="text-sm font-medium text-ink-800">
                     {row.skill}
                   </span>
                   <span
                     className={cn(
-                      "rounded-full px-2 py-0.5 text-[0.68rem] font-bold tracking-wide uppercase",
-                      row.state === "Verified" &&
-                        "bg-teal-100 text-teal-700",
-                      row.state === "In review" &&
-                        "bg-gold-100 text-gold-700",
-                      row.state === "Not started" &&
-                        "bg-navy-100 text-navy-400",
+                      "rounded-full px-2 py-0.5 text-xs font-medium",
+                      row.state === "Verified" && "bg-ok-50 text-ok-600",
+                      row.state === "In review" && "bg-warn-50 text-warn-600",
+                      row.state === "Not started" && "bg-ink-200 text-ink-500",
                     )}
                   >
                     {row.state}
                   </span>
                 </div>
               ))}
-              <p className="pt-1 text-[0.75rem] text-navy-400">
-                Each verified line is an artefact a tutor reviewed — not a
-                certificate name.
-              </p>
             </div>
           ) : null}
 
           {stage === 2 ? (
-            <div key="s2" className="animate-rise space-y-3">
-              <p className="eyebrow text-navy-400">Matched to a job</p>
-              <div className="rounded-xl bg-navy-900 p-4 text-white">
-                <p className="font-heading text-base font-bold">
-                  Junior Data Analyst
-                </p>
-                <p className="mt-0.5 text-[0.8rem] text-navy-200">
+            <div key="s2" className="animate-fade-up space-y-3">
+              <div className="rounded-xl bg-navy-900 p-5 text-white">
+                <p className="text-base font-semibold">Junior Data Analyst</p>
+                <p className="mt-0.5 text-xs text-navy-200">
                   Banjul Data Collective · Hybrid · Banjul
                 </p>
-                <div className="mt-3 flex flex-wrap gap-1.5">
+                <div className="mt-3.5 flex flex-wrap gap-1.5">
                   {["SQL querying", "Data cleaning", "Dashboard design"].map(
                     (s, i) => (
                       <span
                         key={s}
                         className={cn(
-                          "rounded-full px-2 py-0.5 text-[0.68rem] font-semibold",
+                          "rounded-full px-2 py-0.5 text-xs font-medium",
                           i < 2
-                            ? "bg-teal-500/20 text-teal-100"
-                            : "bg-gold-400/20 text-gold-200",
+                            ? "bg-white/15 text-white"
+                            : "bg-white/5 text-navy-300",
                         )}
                       >
                         {s}
@@ -192,21 +171,18 @@ export function HeroDemo() {
                     ),
                   )}
                 </div>
-                <div className="mt-3.5 flex items-center gap-2 border-t border-white/10 pt-3">
-                  <span className="font-heading text-2xl font-bold text-gold-300">
+                <div className="mt-4 flex items-baseline gap-2 border-t border-white/10 pt-3.5">
+                  <span className="text-2xl font-semibold text-gold-300 tabular-nums">
                     94%
                   </span>
-                  <span className="text-[0.75rem] leading-tight text-navy-200">
-                    competency match, with the
-                    <br />
-                    reason attached to the introduction
+                  <span className="text-xs text-navy-200">
+                    competency match
                   </span>
                 </div>
               </div>
-              <p className="text-[0.78rem] leading-relaxed text-navy-500">
-                &ldquo;Three of the four competencies they screen on are already
-                verified in your passport, including the SQL work signed off in
-                week 9.&rdquo;
+              <p className="text-xs leading-relaxed text-ink-500">
+                “Three of the four skills they screen on are already verified in
+                your passport.”
               </p>
             </div>
           ) : null}
@@ -219,10 +195,10 @@ export function HeroDemo() {
             key={s.label}
             type="button"
             aria-label={`Show ${s.label}`}
-            onClick={() => setStage(i)}
+            onClick={() => select(i)}
             className={cn(
-              "h-1.5 rounded-full transition-all",
-              i === stage ? "w-7 bg-navy-800" : "w-1.5 bg-navy-200",
+              "h-1.5 rounded-full transition-all duration-200",
+              i === stage ? "w-6 bg-navy-800" : "w-1.5 bg-ink-300",
             )}
           />
         ))}
