@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, useSyncExternalStore } from "react";
 import Link from "next/link";
 import { ArrowRight, Check, Search, SearchX, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -10,6 +10,15 @@ import { courses, modeLabels, tracks, trackById } from "@/lib/data";
 import { usePlatform } from "@/lib/platform-store";
 import type { DeliveryMode } from "@/lib/types";
 import { cn } from "@/lib/utils";
+
+function subscribeToUrl() {
+  return () => {};
+}
+
+function trackFromUrl() {
+  const requested = new URLSearchParams(window.location.search).get("track");
+  return requested && tracks.some((t) => t.id === requested) ? requested : "all";
+}
 
 const modeFilters: { value: DeliveryMode | "all"; label: string }[] = [
   { value: "all", label: "Any mode" },
@@ -21,7 +30,9 @@ const modeFilters: { value: DeliveryMode | "all"; label: string }[] = [
 export function LearningStudio() {
   const { isEnrolled, compass } = usePlatform();
   const [query, setQuery] = useState("");
-  const [track, setTrack] = useState<string>("all");
+  const urlTrack = useSyncExternalStore(subscribeToUrl, trackFromUrl, () => "all");
+  const [trackOverride, setTrack] = useState<string | null>(null);
+  const track = trackOverride ?? urlTrack;
   const [mode, setMode] = useState<DeliveryMode | "all">("all");
 
   const filtered = useMemo(() => {

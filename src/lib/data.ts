@@ -11,9 +11,6 @@ import type {
   TrackId,
 } from "./types";
 
-export const DEMO_NOTICE =
-  "Prototype: every course, learner, employer and country figure below is illustrative demo data, not a real record.";
-
 export const modeLabels: Record<DeliveryMode, string> = {
   onsite: "Onsite",
   live: "Live tutor-led",
