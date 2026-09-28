@@ -13,6 +13,7 @@ import {
   LayoutDashboard,
   LogOut,
   RotateCcw,
+  UserRound,
   Users,
   X,
 } from "lucide-react";
@@ -20,6 +21,7 @@ import { Mark } from "@/components/brand";
 import { AuthDialog } from "@/components/auth-dialog";
 import { Button } from "@/components/ui/button";
 import { LinkButton } from "@/components/app/link-button";
+import { ProfileAvatar } from "@/components/app/avatar";
 import { usePlatform } from "@/lib/platform-store";
 import { educatorProfile, studentProfile } from "@/lib/data";
 import type { Role } from "@/lib/types";
@@ -48,8 +50,16 @@ export function AppShell({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
-  const { session, signIn, signOut, resetDemo, hydrated, evidenceStatus, passport } =
-    usePlatform();
+  const {
+    session,
+    signIn,
+    signOut,
+    resetDemo,
+    hydrated,
+    evidenceStatus,
+    passport,
+    profile: studentFields,
+  } = usePlatform();
   const [accountOpen, setAccountOpen] = useState(false);
   const [authOpen, setAuthOpen] = useState(false);
   const [authRole, setAuthRole] = useState<Role>(role);
@@ -64,7 +74,21 @@ export function AppShell({
   }, [hydrated, role, session?.role, signIn]);
 
   const nav = role === "student" ? studentNav : educatorNav;
-  const profile = role === "student" ? studentProfile : educatorProfile;
+  const isStudent = role === "student";
+  const displayName = isStudent
+    ? studentFields.fullName || studentProfile.name
+    : educatorProfile.name;
+  const displaySub = isStudent
+    ? studentFields.cohort || studentProfile.cohort
+    : educatorProfile.title;
+  const initials = isStudent
+    ? displayName
+        .trim()
+        .split(/\s+/)
+        .slice(0, 2)
+        .map((p) => p[0]?.toUpperCase() ?? "")
+        .join("") || studentProfile.initials
+    : educatorProfile.initials;
 
   const queueCount = Object.values(evidenceStatus).filter((s) => s === "queued").length;
   const reviewCount = passport.filter((p) => p.status === "in-review").length;
@@ -127,6 +151,16 @@ export function AppShell({
 
   const secondaryActions = (
     <>
+      {isStudent ? (
+        <Link
+          href="/student/profile"
+          onClick={() => setAccountOpen(false)}
+          className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm text-blue-200 transition-colors hover:bg-white/10 hover:text-white"
+        >
+          <UserRound className="size-4" />
+          Your profile
+        </Link>
+      ) : null}
       <Link
         href={role === "student" ? "/educator" : "/student"}
         onClick={() => setAccountOpen(false)}
@@ -158,14 +192,12 @@ export function AppShell({
   );
 
   const avatar = (
-    <span
-      className={cn(
-        "grid size-8 shrink-0 place-items-center rounded-full text-xs font-semibold",
-        role === "student" ? "bg-blue-500 text-white" : "bg-gold-400 text-ink-900",
-      )}
-    >
-      {profile.initials}
-    </span>
+    <ProfileAvatar
+      initials={initials}
+      name={displayName}
+      url={isStudent ? studentFields.avatarUrl : null}
+      tone={isStudent ? "brand" : "accent"}
+    />
   );
 
   return (
@@ -215,9 +247,9 @@ export function AppShell({
           <div className="flex items-center gap-2.5 px-2 py-2">
             {avatar}
             <div className="min-w-0">
-              <p className="truncate text-sm font-medium text-white">{profile.name}</p>
+              <p className="truncate text-sm font-medium text-white">{displayName}</p>
               <p className="truncate text-xs text-blue-300">
-                {role === "student" ? studentProfile.cohort : educatorProfile.title}
+                {displaySub}
               </p>
             </div>
           </div>
@@ -252,9 +284,9 @@ export function AppShell({
             <div className="flex items-center gap-2.5 px-2 pb-3">
               {avatar}
               <div className="min-w-0 flex-1">
-                <p className="truncate text-sm font-medium text-white">{profile.name}</p>
+                <p className="truncate text-sm font-medium text-white">{displayName}</p>
                 <p className="truncate text-xs text-blue-300">
-                  {role === "student" ? studentProfile.cohort : educatorProfile.title}
+                  {displaySub}
                 </p>
               </div>
               <button

@@ -1,16 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import {
-  CircleAlert,
-  Clock,
-  Eye,
-  FileUp,
-  Paperclip,
-  Share2,
-  Upload,
-  X,
-} from "lucide-react";
+import { CircleAlert, Clock, Eye, Paperclip, Share2, Upload } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import {
@@ -29,9 +20,11 @@ import {
   StatRow,
   StatusPill,
 } from "@/components/app/ui-bits";
+import { ProfileAvatar } from "@/components/app/avatar";
+import { FilePicker, FileRow } from "@/components/app/file-picker";
 import { courseBySlug, studentProfile, trackById } from "@/lib/data";
 import { usePlatform } from "@/lib/platform-store";
-import type { CompetencyStatus, PassportEntry } from "@/lib/types";
+import type { CompetencyStatus, PassportEntry, StoredFile } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
 const filters: { value: CompetencyStatus | "all"; label: string }[] = [
@@ -42,7 +35,8 @@ const filters: { value: CompetencyStatus | "all"; label: string }[] = [
 ];
 
 export function SkillsPassport() {
-  const { passport, submitEvidence } = usePlatform();
+  const { passport, submitEvidence, uploadFile, deleteFile, profile } =
+    usePlatform();
   const [filter, setFilter] = useState<CompetencyStatus | "all">("all");
   const [employerView, setEmployerView] = useState(false);
   const [submitting, setSubmitting] = useState<PassportEntry | null>(null);
@@ -92,15 +86,25 @@ export function SkillsPassport() {
 
       <div className="flex flex-col gap-4 rounded-xl bg-blue-950 p-6 text-white sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center gap-4">
-          <span className="grid size-12 shrink-0 place-items-center rounded-xl bg-white/10 text-base font-semibold text-gold-300">
-            {studentProfile.initials}
-          </span>
+          {profile.avatarUrl ? (
+            <ProfileAvatar
+              initials={studentProfile.initials}
+              name={profile.fullName}
+              url={profile.avatarUrl}
+              className="size-12 rounded-xl"
+            />
+          ) : (
+            <span className="grid size-12 shrink-0 place-items-center rounded-xl bg-white/10 text-base font-semibold text-gold-300">
+              {studentProfile.initials}
+            </span>
+          )}
           <div>
             <p className="text-lg leading-tight font-semibold text-white">
-              {studentProfile.name}
+              {profile.fullName || studentProfile.name}
             </p>
             <p className="mt-1 text-xs text-blue-200">
-              {studentProfile.cohort} · {studentProfile.location}
+              {profile.cohort || studentProfile.cohort} ·{" "}
+              {profile.location || studentProfile.location}
             </p>
           </div>
         </div>
@@ -201,6 +205,11 @@ export function SkillsPassport() {
                         <p className="mt-1.5 text-sm leading-relaxed text-ink-600">
                           {entry.evidenceSummary}
                         </p>
+                        {entry.attachments?.length ? (
+                          <p className="mt-2 text-xs text-ink-500">
+                            {entry.attachments.join(", ")}
+                          </p>
+                        ) : null}
                       </div>
                     ) : null}
                   </div>
@@ -248,9 +257,11 @@ export function SkillsPassport() {
       <SubmitEvidenceDialog
         entry={submitting}
         onClose={() => setSubmitting(null)}
-        onSubmit={(title, summary) => {
+        onUpload={uploadFile}
+        onDiscard={deleteFile}
+        onSubmit={(title, summary, attachments) => {
           if (!submitting) return;
-          submitEvidence(submitting.competency, title, summary);
+          submitEvidence(submitting.competency, title, summary, attachments);
           setSubmitting(null);
           toast.success("Evidence submitted", {
             description: `${courseBySlug(submitting.courseSlug)?.tutor ?? "Your tutor"} will review it within two working days.`,
@@ -265,14 +276,22 @@ function SubmitEvidenceDialog({
   entry,
   onClose,
   onSubmit,
+  onUpload,
+  onDiscard,
 }: {
   entry: PassportEntry | null;
   onClose: () => void;
-  onSubmit: (title: string, summary: string) => void;
+  onSubmit: (
+    title: string,
+    summary: string,
+    attachments: StoredFile[],
+  ) => void;
+  onUpload: (file: File, competency?: string) => Promise<StoredFile>;
+  onDiscard: (file: StoredFile) => Promise<void>;
 }) {
   const [title, setTitle] = useState("");
   const [summary, setSummary] = useState("");
-  const [files, setFiles] = useState<string[]>([]);
+  const [files, setFiles] = useState<StoredFile[]>([]);
   const [error, setError] = useState<string | null>(null);
 
   const course = entry ? courseBySlug(entry.courseSlug) : undefined;
@@ -284,26 +303,18 @@ function SubmitEvidenceDialog({
     setError(null);
   };
 
-  const mockAttach = () => {
-    const options = [
-      "decision-memo.pdf",
-      "analysis.ipynb",
-      "cleaned-dataset.csv",
-      "presentation-recording.mp4",
-      "readme.md",
-    ];
-    const next = options.find((o) => !files.includes(o));
-    if (next) setFiles((f) => [...f, next]);
+  // Abandoning the form should not leave orphaned uploads behind.
+  const discardDraft = () => {
+    for (const file of files) void onDiscard(file);
+    reset();
+    onClose();
   };
 
   return (
     <Dialog
       open={Boolean(entry)}
       onOpenChange={(open) => {
-        if (!open) {
-          reset();
-          onClose();
-        }
+        if (!open) discardDraft();
       }}
     >
       <DialogContent className="max-w-lg sm:max-w-lg">
@@ -326,7 +337,7 @@ function SubmitEvidenceDialog({
               setError("Add a couple of sentences on what you did and decided.");
               return;
             }
-            onSubmit(title.trim(), summary.trim());
+            onSubmit(title.trim(), summary.trim(), files);
             reset();
           }}
         >
@@ -362,35 +373,23 @@ function SubmitEvidenceDialog({
             {files.length ? (
               <ul className="space-y-1.5">
                 {files.map((file) => (
-                  <li
-                    key={file}
-                    className="flex items-center justify-between rounded-lg bg-ink-100 px-3 py-2 text-sm text-ink-700"
-                  >
-                    <span className="flex items-center gap-2">
-                      <Paperclip className="size-3.5 text-ink-400" />
-                      {file}
-                    </span>
-                    <button
-                      type="button"
-                      aria-label={`Remove ${file}`}
-                      onClick={() => setFiles((f) => f.filter((x) => x !== file))}
-                      className="rounded-md p-1 text-ink-400 transition-colors hover:bg-white hover:text-destructive"
-                    >
-                      <X className="size-3.5" />
-                    </button>
-                  </li>
+                  <FileRow
+                    key={file.id}
+                    file={file}
+                    onRemove={() => {
+                      setFiles((f) => f.filter((x) => x.id !== file.id));
+                      void onDiscard(file);
+                    }}
+                  />
                 ))}
               </ul>
             ) : null}
-            <Button
-              type="button"
-              variant="outline"
-              onClick={mockAttach}
-              className="w-full border-dashed"
-            >
-              <FileUp />
-              Attach a file
-            </Button>
+            <FilePicker
+              onPick={async (file) => {
+                const stored = await onUpload(file, entry?.competency);
+                setFiles((f) => [...f, stored]);
+              }}
+            />
           </div>
 
           {error ? (
@@ -408,10 +407,7 @@ function SubmitEvidenceDialog({
               variant="outline"
               size="lg"
               className="flex-1"
-              onClick={() => {
-                reset();
-                onClose();
-              }}
+              onClick={discardDraft}
             >
               Cancel
             </Button>
