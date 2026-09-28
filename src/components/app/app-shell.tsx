@@ -130,7 +130,7 @@ export function AppShell({
       <Link
         href={role === "student" ? "/educator" : "/student"}
         onClick={() => setAccountOpen(false)}
-        className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm text-navy-200 transition-colors hover:bg-white/10 hover:text-white"
+        className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm text-blue-200 transition-colors hover:bg-white/10 hover:text-white"
       >
         {role === "student" ? <Users className="size-4" /> : <GraduationCap className="size-4" />}
         Switch to {role === "student" ? "educator" : "student"}
@@ -141,7 +141,7 @@ export function AppShell({
           resetDemo();
           setAccountOpen(false);
         }}
-        className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-sm text-navy-200 transition-colors hover:bg-white/10 hover:text-white"
+        className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-sm text-blue-200 transition-colors hover:bg-white/10 hover:text-white"
       >
         <RotateCcw className="size-4" />
         Reset demo data
@@ -149,7 +149,7 @@ export function AppShell({
       <button
         type="button"
         onClick={signOut}
-        className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-sm text-navy-200 transition-colors hover:bg-white/10 hover:text-white"
+        className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-sm text-blue-200 transition-colors hover:bg-white/10 hover:text-white"
       >
         <LogOut className="size-4" />
         Sign out
@@ -161,7 +161,7 @@ export function AppShell({
     <span
       className={cn(
         "grid size-8 shrink-0 place-items-center rounded-full text-xs font-semibold",
-        role === "student" ? "bg-navy-500 text-white" : "bg-gold-400 text-navy-900",
+        role === "student" ? "bg-blue-500 text-white" : "bg-gold-400 text-ink-900",
       )}
     >
       {profile.initials}
@@ -170,14 +170,14 @@ export function AppShell({
 
   return (
     <div className="min-h-screen bg-ink-50">
-      <aside className="fixed inset-y-0 left-0 z-30 hidden w-60 flex-col bg-navy-950 lg:flex">
+      <aside className="fixed inset-y-0 left-0 z-30 hidden w-60 flex-col bg-blue-950 lg:flex">
         <Link
           href="/"
           className="flex items-center gap-2.5 px-5 py-5 outline-none focus-visible:ring-2 focus-visible:ring-gold-300/60"
         >
           <Mark className="bg-white/10" />
           <span className="text-[0.95rem] font-semibold text-white">
-            Ed-Novate <span className="text-gold-300">Africa</span>
+            Ednovate <span className="text-gold-300">Labs</span>
           </span>
         </Link>
 
@@ -194,15 +194,15 @@ export function AppShell({
                   "flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm transition-colors duration-150 outline-none focus-visible:ring-2 focus-visible:ring-gold-300/60",
                   active
                     ? "bg-white/10 font-medium text-white"
-                    : "text-navy-200 hover:bg-white/5 hover:text-white",
+                    : "text-blue-200 hover:bg-white/5 hover:text-white",
                 )}
               >
                 <item.icon
-                  className={cn("size-4 shrink-0", active ? "text-gold-300" : "text-navy-300")}
+                  className={cn("size-4 shrink-0", active ? "text-gold-300" : "text-blue-300")}
                 />
                 <span className="flex-1 truncate">{item.label}</span>
                 {badge ? (
-                  <span className="grid size-5 shrink-0 place-items-center rounded-full bg-gold-400 text-xs font-semibold text-navy-900 tabular-nums">
+                  <span className="grid size-5 shrink-0 place-items-center rounded-full bg-gold-400 text-xs font-semibold text-ink-900 tabular-nums">
                     {badge}
                   </span>
                 ) : null}
@@ -216,7 +216,7 @@ export function AppShell({
             {avatar}
             <div className="min-w-0">
               <p className="truncate text-sm font-medium text-white">{profile.name}</p>
-              <p className="truncate text-xs text-navy-300">
+              <p className="truncate text-xs text-blue-300">
                 {role === "student" ? studentProfile.cohort : educatorProfile.title}
               </p>
             </div>
@@ -228,13 +228,13 @@ export function AppShell({
       <header className="sticky top-0 z-30 flex h-14 items-center gap-3 border-b border-ink-200 bg-white/90 px-4 backdrop-blur-md lg:hidden">
         <Link href="/" className="flex items-center gap-2">
           <Mark className="size-7 rounded-lg" />
-          <span className="text-sm font-semibold">Ed-Novate</span>
+          <span className="text-sm font-semibold">Ednovate</span>
         </Link>
         <button
           type="button"
           onClick={() => setAccountOpen(true)}
           aria-label="Account and settings"
-          className="ml-auto rounded-full outline-none focus-visible:ring-2 focus-visible:ring-navy-500/45"
+          className="ml-auto rounded-full outline-none focus-visible:ring-2 focus-visible:ring-blue-500/45"
         >
           {avatar}
         </button>
@@ -246,14 +246,14 @@ export function AppShell({
             type="button"
             aria-label="Close menu"
             onClick={() => setAccountOpen(false)}
-            className="absolute inset-0 bg-navy-950/50 backdrop-blur-sm"
+            className="absolute inset-0 bg-blue-950/50 backdrop-blur-sm"
           />
-          <div className="animate-fade-up absolute inset-x-0 bottom-0 rounded-t-2xl bg-navy-950 p-4 pb-8">
+          <div className="animate-fade-up absolute inset-x-0 bottom-0 rounded-t-2xl bg-blue-950 p-4 pb-8">
             <div className="flex items-center gap-2.5 px-2 pb-3">
               {avatar}
               <div className="min-w-0 flex-1">
                 <p className="truncate text-sm font-medium text-white">{profile.name}</p>
-                <p className="truncate text-xs text-navy-300">
+                <p className="truncate text-xs text-blue-300">
                   {role === "student" ? studentProfile.cohort : educatorProfile.title}
                 </p>
               </div>
@@ -261,7 +261,7 @@ export function AppShell({
                 type="button"
                 onClick={() => setAccountOpen(false)}
                 aria-label="Close menu"
-                className="rounded-lg p-2 text-navy-300 hover:bg-white/10 hover:text-white"
+                className="rounded-lg p-2 text-blue-300 hover:bg-white/10 hover:text-white"
               >
                 <X className="size-4" />
               </button>
@@ -286,20 +286,20 @@ export function AppShell({
               aria-current={active ? "page" : undefined}
               className={cn(
                 "relative flex flex-1 flex-col items-center gap-1 py-2.5 text-[0.68rem] font-medium transition-colors",
-                active ? "text-navy-900" : "text-ink-400",
+                active ? "text-blue-600" : "text-ink-400",
               )}
             >
               <span className="relative">
                 <item.icon className="size-5" />
                 {badge ? (
-                  <span className="absolute -top-1 -right-1.5 grid size-3.5 place-items-center rounded-full bg-gold-400 text-[0.55rem] font-semibold text-navy-900">
+                  <span className="absolute -top-1 -right-1.5 grid size-3.5 place-items-center rounded-full bg-gold-400 text-[0.55rem] font-semibold text-ink-900">
                     {badge}
                   </span>
                 ) : null}
               </span>
               {item.short}
               {active ? (
-                <span className="absolute inset-x-4 top-0 h-0.5 rounded-full bg-navy-900" />
+                <span className="absolute inset-x-4 top-0 h-0.5 rounded-full bg-blue-600" />
               ) : null}
             </Link>
           );

@@ -201,10 +201,10 @@ export function CourseDetail({ course }: { course: Course }) {
                     aria-pressed={picked}
                     onClick={() => setMode(m)}
                     className={cn(
-                      "flex w-full items-start gap-3 rounded-lg border p-3.5 text-left transition-colors duration-150 outline-none focus-visible:ring-2 focus-visible:ring-navy-500/45",
+                      "flex w-full items-start gap-3 rounded-lg border p-3.5 text-left transition-colors duration-150 outline-none focus-visible:ring-2 focus-visible:ring-blue-500/45",
                       !offered && "cursor-not-allowed opacity-45",
                       picked
-                        ? "border-navy-900 bg-navy-900"
+                        ? "border-blue-600 bg-blue-600"
                         : "border-ink-200 hover:border-ink-300 hover:bg-ink-50",
                     )}
                   >
@@ -215,7 +215,7 @@ export function CourseDetail({ course }: { course: Course }) {
                       )}
                     >
                       {picked ? (
-                        <Check className="size-2.5 text-navy-900" strokeWidth={4} />
+                        <Check className="size-2.5 text-white" strokeWidth={4} />
                       ) : null}
                     </span>
                     <span className="min-w-0">
@@ -230,7 +230,7 @@ export function CourseDetail({ course }: { course: Course }) {
                       <span
                         className={cn(
                           "mt-0.5 block text-xs leading-snug",
-                          picked ? "text-navy-200" : "text-ink-500",
+                          picked ? "text-blue-200" : "text-ink-500",
                         )}
                       >
                         {offered
@@ -273,7 +273,7 @@ export function CourseDetail({ course }: { course: Course }) {
                   </div>
                   <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-ink-200">
                     <div
-                      className="h-full rounded-full bg-navy-800 transition-[width] duration-500"
+                      className="h-full rounded-full bg-blue-600 transition-[width] duration-500"
                       style={{ width: `${enrollment.progress}%` }}
                     />
                   </div>
@@ -285,7 +285,7 @@ export function CourseDetail({ course }: { course: Course }) {
           <Panel>
             <PanelTitle title="Your tutor" />
             <div className="flex items-center gap-3 p-5">
-              <span className="grid size-10 shrink-0 place-items-center rounded-full bg-navy-800 text-sm font-semibold text-white">
+              <span className="grid size-10 shrink-0 place-items-center rounded-full bg-blue-600 text-sm font-semibold text-white">
                 {course.tutor
                   .split(" ")
                   .map((n) => n[0])

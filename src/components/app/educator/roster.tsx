@@ -161,7 +161,7 @@ export function CohortRoster() {
                     <tr key={learner.id} className="transition-colors hover:bg-ink-50">
                       <td className="px-4 py-3">
                         <div className="flex items-center gap-2.5">
-                          <span className="grid size-8 shrink-0 place-items-center rounded-full bg-navy-800 text-xs font-semibold text-white">
+                          <span className="grid size-8 shrink-0 place-items-center rounded-full bg-blue-600 text-xs font-semibold text-white">
                             {learner.name
                               .split(" ")
                               .map((n) => n[0])
@@ -232,7 +232,7 @@ export function CohortRoster() {
                   <div className="p-4">
                     <div className="flex items-start justify-between gap-3">
                       <div className="flex min-w-0 items-center gap-2.5">
-                        <span className="grid size-9 shrink-0 place-items-center rounded-full bg-navy-800 text-xs font-semibold text-white">
+                        <span className="grid size-9 shrink-0 place-items-center rounded-full bg-blue-600 text-xs font-semibold text-white">
                           {learner.name
                             .split(" ")
                             .map((n) => n[0])
@@ -260,7 +260,7 @@ export function CohortRoster() {
                     <div className="mt-3 flex items-center gap-2.5">
                       <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-ink-200">
                         <div
-                          className="h-full rounded-full bg-navy-800"
+                          className="h-full rounded-full bg-blue-600"
                           style={{ width: `${learner.progress}%` }}
                         />
                       </div>
@@ -299,9 +299,9 @@ function Pill({
       onClick={onClick}
       aria-pressed={active}
       className={cn(
-        "shrink-0 rounded-full border px-3 py-1.5 text-[0.8rem] font-medium transition-colors duration-150 outline-none focus-visible:ring-2 focus-visible:ring-navy-500/45",
+        "shrink-0 rounded-full border px-3 py-1.5 text-[0.8rem] font-medium transition-colors duration-150 outline-none focus-visible:ring-2 focus-visible:ring-blue-500/45",
         active
-          ? "border-navy-900 bg-navy-900 text-white"
+          ? "border-blue-600 bg-blue-600 text-white"
           : "border-ink-200 bg-white text-ink-600 hover:border-ink-300 hover:text-ink-900",
       )}
     >

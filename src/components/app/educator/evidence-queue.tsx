@@ -87,8 +87,8 @@ export function EvidenceQueue() {
                       onClick={() => setPickedId(item.id)}
                       aria-current={active ? "true" : undefined}
                       className={cn(
-                        "w-full px-5 py-3.5 text-left transition-colors duration-150 outline-none focus-visible:ring-2 focus-visible:ring-navy-500/45 focus-visible:-outline-offset-2",
-                        active ? "bg-navy-900" : "hover:bg-ink-50",
+                        "w-full px-5 py-3.5 text-left transition-colors duration-150 outline-none focus-visible:ring-2 focus-visible:ring-blue-500/45 focus-visible:-outline-offset-2",
+                        active ? "bg-blue-950" : "hover:bg-ink-50",
                       )}
                     >
                       <p
@@ -102,7 +102,7 @@ export function EvidenceQueue() {
                       <p
                         className={cn(
                           "mt-0.5 text-xs",
-                          active ? "text-navy-200" : "text-ink-500",
+                          active ? "text-blue-200" : "text-ink-500",
                         )}
                       >
                         {item.competency}
@@ -110,7 +110,7 @@ export function EvidenceQueue() {
                       <p
                         className={cn(
                           "mt-1 text-xs",
-                          active ? "text-navy-300" : "text-ink-400",
+                          active ? "text-blue-300" : "text-ink-400",
                         )}
                       >
                         {item.submitted} · {unmet ? `${unmet} unmet` : "rubric met"}

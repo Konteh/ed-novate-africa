@@ -13,8 +13,8 @@ export async function generateMetadata({
   const course = courseBySlug(slug);
   return {
     title: course
-      ? `${course.title} · Ed-Novate Africa`
-      : "Course not found · Ed-Novate Africa",
+      ? `${course.title} · Ednovate Labs`
+      : "Course not found · Ednovate Labs",
   };
 }
 

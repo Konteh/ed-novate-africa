@@ -86,9 +86,9 @@ export function TalentBridge() {
               onClick={() => setScope(s.value)}
               aria-pressed={scope === s.value}
               className={cn(
-                "rounded-full border px-3 py-1.5 text-[0.8rem] font-medium transition-colors duration-150 outline-none focus-visible:ring-2 focus-visible:ring-navy-500/45",
+                "rounded-full border px-3 py-1.5 text-[0.8rem] font-medium transition-colors duration-150 outline-none focus-visible:ring-2 focus-visible:ring-blue-500/45",
                 scope === s.value
-                  ? "border-navy-900 bg-navy-900 text-white"
+                  ? "border-blue-600 bg-blue-600 text-white"
                   : "border-ink-200 bg-white text-ink-600 hover:border-ink-300 hover:text-ink-900",
               )}
             >
@@ -106,8 +106,8 @@ export function TalentBridge() {
           />
           <span
             className={cn(
-              "relative h-5 w-9 rounded-full transition-colors duration-150 peer-focus-visible:ring-2 peer-focus-visible:ring-navy-500/45 peer-focus-visible:ring-offset-2",
-              onlyStrong ? "bg-navy-900" : "bg-ink-300",
+              "relative h-5 w-9 rounded-full transition-colors duration-150 peer-focus-visible:ring-2 peer-focus-visible:ring-blue-500/45 peer-focus-visible:ring-offset-2",
+              onlyStrong ? "bg-blue-600" : "bg-ink-300",
             )}
           >
             <span

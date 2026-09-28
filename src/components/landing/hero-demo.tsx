@@ -61,9 +61,9 @@ export function HeroDemo() {
               aria-pressed={i === stage}
               onClick={() => select(i)}
               className={cn(
-                "flex items-center gap-1.5 rounded-full px-2.5 py-1.5 text-xs font-medium transition-colors duration-150 outline-none focus-visible:ring-2 focus-visible:ring-navy-500/45",
+                "flex items-center gap-1.5 rounded-full px-2.5 py-1.5 text-xs font-medium transition-colors duration-150 outline-none focus-visible:ring-2 focus-visible:ring-blue-500/45",
                 i === stage
-                  ? "bg-navy-900 text-white"
+                  ? "bg-blue-600 text-white"
                   : "text-ink-500 hover:bg-white hover:text-ink-800",
               )}
             >
@@ -79,7 +79,7 @@ export function HeroDemo() {
           {stage === 0 ? (
             <div key="s0" className="animate-fade-up space-y-4">
               <div className="flex items-start gap-2.5">
-                <span className="grid size-7 shrink-0 place-items-center rounded-full bg-navy-900 text-white">
+                <span className="grid size-7 shrink-0 place-items-center rounded-full bg-blue-600 text-white">
                   <Sparkles className="size-3.5" />
                 </span>
                 <p className="rounded-xl rounded-tl-sm bg-ink-100 px-3.5 py-2.5 text-sm font-medium text-ink-800">
@@ -93,7 +93,7 @@ export function HeroDemo() {
                     className={cn(
                       "rounded-full border px-3 py-1.5 text-xs font-medium",
                       i === 0
-                        ? "border-navy-900 bg-navy-900 text-white"
+                        ? "border-blue-600 bg-blue-600 text-white"
                         : "border-ink-200 text-ink-500",
                     )}
                   >
@@ -121,7 +121,7 @@ export function HeroDemo() {
                   Skills Passport
                 </p>
                 <span className="text-xs text-ink-400 tabular-nums">
-                  ENA-GM-2026-04182
+                  ENL-GM-2026-04182
                 </span>
               </div>
               {passportRows.map((row) => (
@@ -149,9 +149,9 @@ export function HeroDemo() {
 
           {stage === 2 ? (
             <div key="s2" className="animate-fade-up space-y-3">
-              <div className="rounded-xl bg-navy-900 p-5 text-white">
+              <div className="rounded-xl bg-blue-950 p-5 text-white">
                 <p className="text-base font-semibold">Junior Data Analyst</p>
-                <p className="mt-0.5 text-xs text-navy-200">
+                <p className="mt-0.5 text-xs text-blue-200">
                   Banjul Data Collective · Hybrid · Banjul
                 </p>
                 <div className="mt-3.5 flex flex-wrap gap-1.5">
@@ -163,7 +163,7 @@ export function HeroDemo() {
                           "rounded-full px-2 py-0.5 text-xs font-medium",
                           i < 2
                             ? "bg-white/15 text-white"
-                            : "bg-white/5 text-navy-300",
+                            : "bg-white/5 text-blue-300",
                         )}
                       >
                         {s}
@@ -175,7 +175,7 @@ export function HeroDemo() {
                   <span className="text-2xl font-semibold text-gold-300 tabular-nums">
                     94%
                   </span>
-                  <span className="text-xs text-navy-200">
+                  <span className="text-xs text-blue-200">
                     competency match
                   </span>
                 </div>
@@ -198,7 +198,7 @@ export function HeroDemo() {
             onClick={() => select(i)}
             className={cn(
               "h-1.5 rounded-full transition-all duration-200",
-              i === stage ? "w-6 bg-navy-800" : "w-1.5 bg-ink-300",
+              i === stage ? "w-6 bg-blue-600" : "w-1.5 bg-ink-300",
             )}
           />
         ))}

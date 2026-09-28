@@ -1,6 +1,6 @@
 import { LearningStudio } from "@/components/app/student/learning-studio";
 
-export const metadata = { title: "Learning Studio · Ed-Novate Africa" };
+export const metadata = { title: "Learning Studio · Ednovate Labs" };
 
 export default function StudioPage() {
   return <LearningStudio />;

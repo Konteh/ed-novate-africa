@@ -59,7 +59,7 @@ export function SkillsPassport() {
   }, [passport, verified, filter, employerView]);
 
   const copyLink = async () => {
-    const url = `https://ed-novate.africa/passport/${studentProfile.passportId}`;
+    const url = `https://ednovatelabs.com/passport/${studentProfile.passportId}`;
     try {
       await navigator.clipboard.writeText(url);
       toast.success("Passport link copied");
@@ -90,7 +90,7 @@ export function SkillsPassport() {
         }
       />
 
-      <div className="flex flex-col gap-4 rounded-xl bg-navy-900 p-6 text-white sm:flex-row sm:items-center sm:justify-between">
+      <div className="flex flex-col gap-4 rounded-xl bg-blue-950 p-6 text-white sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center gap-4">
           <span className="grid size-12 shrink-0 place-items-center rounded-xl bg-white/10 text-base font-semibold text-gold-300">
             {studentProfile.initials}
@@ -99,13 +99,13 @@ export function SkillsPassport() {
             <p className="text-lg leading-tight font-semibold text-white">
               {studentProfile.name}
             </p>
-            <p className="mt-1 text-xs text-navy-200">
+            <p className="mt-1 text-xs text-blue-200">
               {studentProfile.cohort} · {studentProfile.location}
             </p>
           </div>
         </div>
         <div className="sm:text-right">
-          <p className="text-xs text-navy-300">Passport ID</p>
+          <p className="text-xs text-blue-300">Passport ID</p>
           <p className="mt-1 font-mono text-sm">{studentProfile.passportId}</p>
         </div>
       </div>
@@ -138,9 +138,9 @@ export function SkillsPassport() {
                   onClick={() => setFilter(f.value)}
                   aria-pressed={filter === f.value}
                   className={cn(
-                    "rounded-full border px-3 py-1.5 text-[0.8rem] font-medium transition-colors duration-150 outline-none focus-visible:ring-2 focus-visible:ring-navy-500/45",
+                    "rounded-full border px-3 py-1.5 text-[0.8rem] font-medium transition-colors duration-150 outline-none focus-visible:ring-2 focus-visible:ring-blue-500/45",
                     filter === f.value
-                      ? "border-navy-900 bg-navy-900 text-white"
+                      ? "border-blue-600 bg-blue-600 text-white"
                       : "border-ink-200 bg-white text-ink-600 hover:border-ink-300 hover:text-ink-900",
                   )}
                 >
@@ -148,7 +148,7 @@ export function SkillsPassport() {
                   <span
                     className={cn(
                       "ml-1.5 tabular-nums",
-                      filter === f.value ? "text-navy-300" : "text-ink-400",
+                      filter === f.value ? "text-blue-300" : "text-ink-400",
                     )}
                   >
                     {count}

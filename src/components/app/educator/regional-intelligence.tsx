@@ -100,7 +100,7 @@ export function RegionalIntelligence() {
               <Bar
                 dataKey="verified"
                 name="Verified learners"
-                fill="#12684c"
+                fill="#1e8e3e"
                 radius={[3, 3, 0, 0]}
                 maxBarSize={24}
                 isAnimationActive={false}
@@ -108,7 +108,7 @@ export function RegionalIntelligence() {
               <Bar
                 dataKey="roles"
                 name="Open roles"
-                fill="#e5ad35"
+                fill="#fbbc04"
                 radius={[3, 3, 0, 0]}
                 maxBarSize={24}
                 isAnimationActive={false}
@@ -132,9 +132,9 @@ export function RegionalIntelligence() {
                   type="monotone"
                   dataKey="gap"
                   name="Unmet roles"
-                  stroke="#142d4a"
+                  stroke="#1a73e8"
                   strokeWidth={2}
-                  dot={{ r: 3, fill: "#142d4a" }}
+                  dot={{ r: 3, fill: "#1a73e8" }}
                   activeDot={{ r: 5 }}
                   isAnimationActive={false}
                 />
@@ -184,7 +184,7 @@ export function RegionalIntelligence() {
                 type="monotone"
                 dataKey="onsite"
                 name="Onsite"
-                stroke="#142d4a"
+                stroke="#1a73e8"
                 strokeWidth={2}
                 dot={false}
                 isAnimationActive={false}
@@ -193,7 +193,7 @@ export function RegionalIntelligence() {
                 type="monotone"
                 dataKey="live"
                 name="Live tutor-led"
-                stroke="#5a88b9"
+                stroke="#8ab4f8"
                 strokeWidth={2}
                 dot={false}
                 isAnimationActive={false}
@@ -202,7 +202,7 @@ export function RegionalIntelligence() {
                 type="monotone"
                 dataKey="self"
                 name="Self-paced"
-                stroke="#e5ad35"
+                stroke="#fbbc04"
                 strokeWidth={2}
                 dot={false}
                 isAnimationActive={false}
@@ -224,9 +224,9 @@ export function RegionalIntelligence() {
                   onClick={() => setSort(option.key)}
                   aria-pressed={sort === option.key}
                   className={cn(
-                    "rounded-full border px-2.5 py-1 text-xs font-medium transition-colors duration-150 outline-none focus-visible:ring-2 focus-visible:ring-navy-500/45",
+                    "rounded-full border px-2.5 py-1 text-xs font-medium transition-colors duration-150 outline-none focus-visible:ring-2 focus-visible:ring-blue-500/45",
                     sort === option.key
-                      ? "border-navy-900 bg-navy-900 text-white"
+                      ? "border-blue-600 bg-blue-600 text-white"
                       : "border-ink-200 text-ink-600 hover:border-ink-300 hover:text-ink-900",
                   )}
                 >

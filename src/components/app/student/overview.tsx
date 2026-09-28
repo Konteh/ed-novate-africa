@@ -83,12 +83,12 @@ export function StudentOverview() {
 
       <div className="grid gap-5 lg:grid-cols-[1.3fr_1fr]">
         <div className="space-y-5">
-          <div className="flex flex-col gap-4 rounded-xl bg-navy-900 p-6 text-white sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex flex-col gap-4 rounded-xl bg-blue-950 p-6 text-white sm:flex-row sm:items-center sm:justify-between">
             <div>
               <h2 className="text-lg font-semibold text-white">
                 {nextAction.title}
               </h2>
-              <p className="mt-1 text-sm text-navy-200">{nextAction.body}</p>
+              <p className="mt-1 text-sm text-blue-200">{nextAction.body}</p>
             </div>
             <LinkButton
               href={nextAction.href}
@@ -138,7 +138,7 @@ export function StudentOverview() {
                 </div>
                 <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-ink-200">
                   <div
-                    className="h-full rounded-full bg-navy-800 transition-[width] duration-500"
+                    className="h-full rounded-full bg-blue-600 transition-[width] duration-500"
                     style={{ width: `${primary.progress}%` }}
                   />
                 </div>

@@ -116,7 +116,7 @@ export function CareerCompass() {
       <div className="grid gap-5 lg:grid-cols-[1.1fr_1fr] lg:items-start">
         <Panel className="flex flex-col lg:min-h-[30rem]">
           <div className="flex items-center gap-2.5 border-b border-ink-200 px-5 py-3">
-            <span className="grid size-7 place-items-center rounded-full bg-navy-900 text-gold-300">
+            <span className="grid size-7 place-items-center rounded-full bg-blue-600 text-gold-300">
               <Compass className="size-3.5" />
             </span>
             <p className="text-sm font-semibold">Career Compass</p>
@@ -143,7 +143,7 @@ export function CareerCompass() {
               if (turn.kind === "answer") {
                 return (
                   <div key={i} className="flex justify-end">
-                    <span className="animate-fade-up max-w-[85%] rounded-xl rounded-br-sm bg-navy-900 px-3.5 py-2.5 text-sm font-medium text-white">
+                    <span className="animate-fade-up max-w-[85%] rounded-xl rounded-br-sm bg-blue-600 px-3.5 py-2.5 text-sm font-medium text-white">
                       {turn.label}
                     </span>
                   </div>
@@ -172,7 +172,7 @@ export function CareerCompass() {
                           key={option.value}
                           type="button"
                           onClick={() => choose(question.id, option.value, option.label)}
-                          className="rounded-lg border border-ink-200 bg-white px-3.5 py-2 text-left text-sm font-medium text-ink-800 transition-colors duration-150 outline-none hover:border-navy-900 hover:bg-navy-900 hover:text-white focus-visible:ring-2 focus-visible:ring-navy-500/45"
+                          className="rounded-lg border border-ink-200 bg-white px-3.5 py-2 text-left text-sm font-medium text-ink-800 transition-colors duration-150 outline-none hover:border-blue-600 hover:bg-blue-600 hover:text-white focus-visible:ring-2 focus-visible:ring-blue-500/45"
                         >
                           {option.label}
                         </button>
@@ -224,14 +224,14 @@ export function CareerCompass() {
             </Panel>
           ) : (
             <>
-              <div className="animate-fade-up rounded-xl bg-navy-900 p-6 text-white">
-                <p className="text-xs text-navy-300">Recommended track</p>
+              <div className="animate-fade-up rounded-xl bg-blue-950 p-6 text-white">
+                <p className="text-xs text-blue-300">Recommended track</p>
                 <h2 className="mt-1 text-[1.4rem] leading-tight font-semibold text-white">
                   {trackById(result.trackId).name}
                 </h2>
 
                 <div className="mt-5 rounded-lg bg-white/5 p-4">
-                  <p className="text-xs text-navy-300">Start here</p>
+                  <p className="text-xs text-blue-300">Start here</p>
                   <p className="mt-1 text-base font-semibold">{primaryCourse.title}</p>
                   <div className="mt-2.5 flex flex-wrap gap-1.5 text-xs">
                     <span className="rounded-full bg-white/10 px-2 py-0.5">
@@ -257,7 +257,7 @@ export function CareerCompass() {
                     <LinkButton
                       variant="ghost"
                       href={`/student/studio/${primaryCourse.slug}`}
-                      className="text-navy-100 hover:bg-white/10 hover:text-white"
+                      className="text-blue-100 hover:bg-white/10 hover:text-white"
                     >
                       Syllabus
                       <ArrowRight />
@@ -329,7 +329,7 @@ export function CareerCompass() {
 function Bubble({ children }: { children: React.ReactNode }) {
   return (
     <div className="animate-fade-up flex items-start gap-2.5">
-      <span className="grid size-7 shrink-0 place-items-center rounded-full bg-navy-900 text-white">
+      <span className="grid size-7 shrink-0 place-items-center rounded-full bg-blue-600 text-white">
         <Sparkles className="size-3.5" />
       </span>
       <div className="max-w-[85%] rounded-xl rounded-tl-sm bg-ink-100 px-3.5 py-2.5 text-sm leading-relaxed">

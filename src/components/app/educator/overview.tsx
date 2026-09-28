@@ -132,7 +132,7 @@ export function EducatorOverview() {
               <li key={learner.id} className="px-5 py-3.5">
                 <div className="flex items-center justify-between gap-3">
                   <div className="flex min-w-0 items-center gap-2.5">
-                    <span className="grid size-8 shrink-0 place-items-center rounded-full bg-navy-800 text-xs font-semibold text-white">
+                    <span className="grid size-8 shrink-0 place-items-center rounded-full bg-blue-600 text-xs font-semibold text-white">
                       {learner.name
                         .split(" ")
                         .map((n) => n[0])

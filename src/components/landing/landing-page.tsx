@@ -83,7 +83,7 @@ export function LandingPage() {
 
   return (
     <div className="flex flex-col">
-      <p className="bg-navy-900 px-4 py-1.5 text-center text-xs text-navy-200">
+      <p className="bg-blue-950 px-4 py-1.5 text-center text-xs text-blue-200">
         Prototype — all data shown is illustrative.
       </p>
 
@@ -91,8 +91,8 @@ export function LandingPage() {
         <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between gap-4 px-5">
           <Link
             href="/"
-            aria-label="Ed-Novate Africa home"
-            className="rounded-lg outline-none focus-visible:ring-2 focus-visible:ring-navy-500/45"
+            aria-label="Ednovate Labs home"
+            className="rounded-lg outline-none focus-visible:ring-2 focus-visible:ring-blue-500/45"
           >
             <Wordmark />
           </Link>
@@ -184,7 +184,7 @@ export function LandingPage() {
           <div className="mt-8 grid gap-px overflow-hidden rounded-xl border border-ink-200 bg-ink-200 sm:grid-cols-3">
             {value.map((item) => (
               <div key={item.title} className="bg-white p-6">
-                <span className="grid size-9 place-items-center rounded-lg bg-ink-100 text-navy-700">
+                <span className="grid size-9 place-items-center rounded-lg bg-ink-100 text-blue-700">
                   <item.icon className="size-4.5" />
                 </span>
                 <h3 className="mt-4 text-base font-semibold">{item.title}</h3>
@@ -197,7 +197,7 @@ export function LandingPage() {
         </div>
       </section>
 
-      <section id="journey" className="bg-navy-950 py-16 text-white">
+      <section id="journey" className="bg-blue-950 py-16 text-white">
         <div className="mx-auto w-full max-w-6xl px-5">
           <h2 className="text-2xl font-semibold text-white sm:text-[1.75rem]">
             The five-step journey
@@ -225,7 +225,7 @@ export function LandingPage() {
                 <span
                   className={cn(
                     "text-xs font-medium tabular-nums",
-                    i === activeStep ? "text-gold-300" : "text-navy-300",
+                    i === activeStep ? "text-gold-300" : "text-blue-300",
                   )}
                 >
                   {i + 1}
@@ -233,7 +233,7 @@ export function LandingPage() {
                 <span className="mt-1.5 block text-sm font-semibold text-white">
                   {item.name}
                 </span>
-                <span className="mt-0.5 block text-xs text-navy-300">
+                <span className="mt-0.5 block text-xs text-blue-300">
                   {item.short}
                 </span>
               </button>
@@ -243,7 +243,7 @@ export function LandingPage() {
           <div className="mt-4 flex flex-col gap-4 rounded-xl border border-white/10 bg-white/5 px-5 py-5 sm:flex-row sm:items-center sm:justify-between">
             <p
               key={step.id}
-              className="animate-fade-up max-w-2xl text-sm leading-relaxed text-navy-100"
+              className="animate-fade-up max-w-2xl text-sm leading-relaxed text-blue-100"
             >
               {step.detail}
             </p>
@@ -300,7 +300,7 @@ export function LandingPage() {
         </div>
       </section>
 
-      <footer className="border-t border-ink-200 bg-navy-950 py-10 text-navy-300">
+      <footer className="border-t border-ink-200 bg-blue-950 py-10 text-blue-300">
         <div className="mx-auto flex w-full max-w-6xl flex-col gap-5 px-5 sm:flex-row sm:items-center sm:justify-between">
           <WordmarkLight />
           <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm">

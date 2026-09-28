@@ -52,17 +52,17 @@ export function AuthDialog({
         showCloseButton={false}
         className="max-w-[26.5rem] gap-0 overflow-hidden p-0 sm:max-w-[26.5rem]"
       >
-        <div className="flex items-center justify-between bg-navy-900 px-5 py-3.5">
+        <div className="flex items-center justify-between bg-blue-950 px-5 py-3.5">
           <span className="flex items-center gap-2.5">
             <Mark className="size-8 bg-white/10 ring-1 ring-white/15" />
             <span className="text-sm font-semibold text-white">
-              Ed-Novate <span className="text-gold-300">Africa</span>
+              Ednovate <span className="text-gold-300">Labs</span>
             </span>
           </span>
           <button
             type="button"
             onClick={() => onOpenChange(false)}
-            className="flex items-center gap-1 rounded-md px-2 py-1 text-xs font-medium text-navy-100 transition-colors hover:bg-white/10 hover:text-white"
+            className="flex items-center gap-1 rounded-md px-2 py-1 text-xs font-medium text-blue-100 transition-colors hover:bg-white/10 hover:text-white"
           >
             <ArrowLeft className="size-3.5" />
             Back

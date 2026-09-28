@@ -192,9 +192,9 @@ function FilterPill({
       onClick={onClick}
       aria-pressed={active}
       className={cn(
-        "shrink-0 rounded-full border px-3 py-1.5 text-[0.8rem] font-medium transition-colors duration-150 outline-none focus-visible:ring-2 focus-visible:ring-navy-500/45",
+        "shrink-0 rounded-full border px-3 py-1.5 text-[0.8rem] font-medium transition-colors duration-150 outline-none focus-visible:ring-2 focus-visible:ring-blue-500/45",
         active
-          ? "border-navy-900 bg-navy-900 text-white"
+          ? "border-blue-600 bg-blue-600 text-white"
           : "border-ink-200 bg-white text-ink-600 hover:border-ink-300 hover:text-ink-900",
       )}
     >
