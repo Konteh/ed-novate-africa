@@ -11,7 +11,7 @@
   --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
 
   /* Neutral scale carries text, borders and surfaces. Keeping it off the
-     brand hue stops every pixel from reading navy. */
+     brand hue stops every pixel from reading blue. */
   --color-ink-50: #f7f8fa;
   --color-ink-100: #eff1f5;
   --color-ink-200: #e2e6ec;
@@ -23,33 +23,34 @@
   --color-ink-800: #262d38;
   --color-ink-900: #161b23;
 
-  /* Brand. Used for primary actions, the sidebar and the mark. */
-  --color-navy-50: #f1f5fa;
-  --color-navy-100: #e0e9f4;
-  --color-navy-200: #c2d4e8;
-  --color-navy-300: #92b2d3;
-  --color-navy-400: #5a88b9;
-  --color-navy-500: #36699f;
-  --color-navy-600: #275285;
-  --color-navy-700: #1d3f66;
-  --color-navy-800: #142d4a;
-  --color-navy-900: #0d2035;
-  --color-navy-950: #071522;
+  /* Brand: Google Blue. 500 is the brand blue, 600 is the action blue used
+     on primary controls. */
+  --color-blue-50: #f3f7fe;
+  --color-blue-100: #e8f0fe;
+  --color-blue-200: #d2e3fc;
+  --color-blue-300: #aecbfa;
+  --color-blue-400: #8ab4f8;
+  --color-blue-500: #4285f4;
+  --color-blue-600: #1a73e8;
+  --color-blue-700: #1967d2;
+  --color-blue-800: #185abc;
+  --color-blue-900: #174ea6;
+  --color-blue-950: #0e2f6b;
 
-  /* Accent. One colour, used sparingly. */
-  --color-gold-100: #faeecd;
-  --color-gold-200: #f4dc9d;
-  --color-gold-300: #edc563;
-  --color-gold-400: #e5ad35;
-  --color-gold-500: #cf8f1b;
-  --color-gold-600: #a96d13;
-  --color-gold-700: #855316;
+  /* Accent: Google Yellow, used sparingly. */
+  --color-gold-100: #fef7e0;
+  --color-gold-200: #feefc3;
+  --color-gold-300: #fde293;
+  --color-gold-400: #fbbc04;
+  --color-gold-500: #f9ab00;
+  --color-gold-600: #e37400;
+  --color-gold-700: #b06000;
 
-  /* Status. Three states, deliberately quiet. */
-  --color-ok-50: #ecf6f1;
-  --color-ok-600: #12684c;
-  --color-warn-50: #fcf3e4;
-  --color-warn-600: #93601a;
+  /* Status: Google Green and Yellow, deliberately quiet. */
+  --color-ok-50: #e6f4ea;
+  --color-ok-600: #1e8e3e;
+  --color-warn-50: #fef7e0;
+  --color-warn-600: #b06000;
 
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
@@ -102,7 +103,7 @@
   --card-foreground: #161b23;
   --popover: #ffffff;
   --popover-foreground: #161b23;
-  --primary: #0d2035;
+  --primary: #1a73e8;
   --primary-foreground: #ffffff;
   --secondary: #f7f8fa;
   --secondary-foreground: #262d38;
@@ -110,23 +111,23 @@
   --muted-foreground: #6d7787;
   --accent: #f7f8fa;
   --accent-foreground: #262d38;
-  --destructive: #c0392b;
+  --destructive: #d93025;
   --border: #e2e6ec;
   --input: #cbd2dc;
-  --ring: #36699f;
-  --chart-1: #0d2035;
-  --chart-2: #e5ad35;
-  --chart-3: #36699f;
-  --chart-4: #12684c;
+  --ring: #1a73e8;
+  --chart-1: #1a73e8;
+  --chart-2: #fbbc04;
+  --chart-3: #4285f4;
+  --chart-4: #1e8e3e;
   --chart-5: #9aa4b3;
-  --sidebar: #0d2035;
-  --sidebar-foreground: #c2d4e8;
-  --sidebar-primary: #e5ad35;
-  --sidebar-primary-foreground: #0d2035;
-  --sidebar-accent: #142d4a;
+  --sidebar: #0e2f6b;
+  --sidebar-foreground: #d2e3fc;
+  --sidebar-primary: #fbbc04;
+  --sidebar-primary-foreground: #0e2f6b;
+  --sidebar-accent: #185abc;
   --sidebar-accent-foreground: #ffffff;
-  --sidebar-border: #1d3f66;
-  --sidebar-ring: #36699f;
+  --sidebar-border: #1967d2;
+  --sidebar-ring: #4285f4;
 }
 
 @layer base {
@@ -158,7 +159,7 @@
 
 /* A card that leads somewhere. Pairs with `group` on the wrapper. */
 @utility card-link {
-  @apply transition-[border-color,box-shadow,transform] duration-150 hover:border-ink-300 hover:shadow-lift focus-visible:ring-2 focus-visible:ring-navy-500/40 focus-visible:outline-none active:translate-y-px;
+  @apply transition-[border-color,box-shadow,transform] duration-150 hover:border-ink-300 hover:shadow-lift focus-visible:ring-2 focus-visible:ring-blue-500/40 focus-visible:outline-none active:translate-y-px;
 }
 
 @keyframes fade-up {

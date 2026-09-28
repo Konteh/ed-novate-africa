@@ -93,7 +93,7 @@ export const courses: Course[] = [
     weeks: 12,
     hoursPerWeek: 8,
     modes: ["onsite", "live", "self-paced"],
-    hub: "Ed-Novate Hub, Kanifing",
+    hub: "Ednovate Lab, Kanifing",
     tutor: "Fatoumatta Jallow",
     tutorTitle: "Lead tutor, Data practice",
     skills: [
@@ -157,7 +157,7 @@ export const courses: Course[] = [
     weeks: 16,
     hoursPerWeek: 10,
     modes: ["onsite", "live", "self-paced"],
-    hub: "Ed-Novate Hub, Kanifing",
+    hub: "Ednovate Lab, Kanifing",
     tutor: "Ebrima Darboe",
     tutorTitle: "Lead tutor, Software practice",
     skills: [
@@ -264,7 +264,7 @@ export const courses: Course[] = [
     weeks: 12,
     hoursPerWeek: 8,
     modes: ["onsite", "live"],
-    hub: "Ed-Novate Hub, Banjul",
+    hub: "Ednovate Lab, Banjul",
     tutor: "Isatou Bah",
     tutorTitle: "Lead tutor, Security practice",
     skills: [
@@ -317,7 +317,7 @@ export const courses: Course[] = [
     weeks: 10,
     hoursPerWeek: 6,
     modes: ["onsite", "live", "self-paced"],
-    hub: "Ed-Novate Hub, Serrekunda",
+    hub: "Ednovate Lab, Serrekunda",
     tutor: "Mariama Njie",
     tutorTitle: "Tutor, Digital business",
     skills: [
@@ -370,7 +370,7 @@ export const courses: Course[] = [
     weeks: 14,
     hoursPerWeek: 7,
     modes: ["onsite", "live"],
-    hub: "Ed-Novate Hub, Janjanbureh",
+    hub: "Ednovate Lab, Janjanbureh",
     tutor: "Lamin Touray",
     tutorTitle: "Tutor, Climate & agriculture",
     skills: [
@@ -1255,8 +1255,8 @@ export const gapTrend = [
 ];
 
 export const modeSplit = [
-  { mode: "Onsite", learners: 2940, fill: "var(--color-navy-800)" },
-  { mode: "Live tutor-led", learners: 3420, fill: "var(--color-navy-400)" },
+  { mode: "Onsite", learners: 2940, fill: "var(--color-blue-600)" },
+  { mode: "Live tutor-led", learners: 3420, fill: "var(--color-blue-300)" },
   { mode: "Self-paced", learners: 1975, fill: "var(--color-gold-400)" },
 ];
 
@@ -1318,13 +1318,13 @@ export const studentProfile = {
   cohort: "Data — Sept 2026",
   location: "Kanifing, The Gambia",
   joined: "March 2026",
-  passportId: "ENA-GM-2026-04182",
+  passportId: "ENL-GM-2026-04182",
 };
 
 export const educatorProfile = {
   name: "Fatoumatta Jallow",
   initials: "FJ",
   title: "Lead tutor, Data practice",
-  location: "Ed-Novate Hub, Kanifing",
+  location: "Ednovate Lab, Kanifing",
   cohorts: 3,
 };

@@ -11,7 +11,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Ed-Novate Africa",
+  title: "Ednovate Labs",
   description:
     "A guided path from choosing a course to getting hired, for learners in The Gambia and across ECOWAS.",
 };

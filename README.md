@@ -1,6 +1,6 @@
-# Ed-Novate Africa — prototype
+# Ednovate Labs — prototype
 
-An interactive prototype of **Ed-Novate Africa**, an edtech platform for The Gambia and the wider ECOWAS region. It pairs an AI career counsellor with hybrid courses, a verified skills passport, and direct employer connections — so learners get a real path, and educators get the data to close real gaps.
+An interactive prototype of **Ednovate Labs**, an edtech platform for The Gambia and the wider ECOWAS region. It pairs an AI career counsellor with hybrid courses, a verified skills passport, and direct employer connections — so learners get a real path, and educators get the data to close real gaps.
 
 This started as a Claude artifact that was a landing page and a login modal. The five steps of the journey were named there but not built; this repository builds them.
 

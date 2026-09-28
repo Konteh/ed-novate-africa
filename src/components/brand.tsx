@@ -4,7 +4,7 @@ export function Mark({ className }: { className?: string }) {
   return (
     <span
       className={cn(
-        "relative grid size-9 shrink-0 place-items-center overflow-hidden rounded-[0.7rem] bg-navy-900",
+        "relative grid size-9 shrink-0 place-items-center overflow-hidden rounded-[0.7rem] bg-blue-600",
         className,
       )}
       aria-hidden
@@ -38,7 +38,7 @@ export function Wordmark({
       <Mark />
       <span className="flex flex-col leading-none">
         <span className="text-[0.95rem] font-semibold tracking-tight text-ink-900">
-          Ed-Novate <span className="text-gold-600">Africa</span>
+          Ednovate <span className="text-gold-600">Labs</span>
         </span>
         {subtitle ? (
           <span className="mt-1 text-[0.68rem] font-medium text-ink-400">
@@ -55,7 +55,7 @@ export function WordmarkLight({ className }: { className?: string }) {
     <span className={cn("flex items-center gap-2.5", className)}>
       <Mark className="bg-white/10 ring-1 ring-white/15" />
       <span className="text-[0.95rem] font-semibold tracking-tight text-white">
-        Ed-Novate <span className="text-gold-300">Africa</span>
+        Ednovate <span className="text-gold-300">Labs</span>
       </span>
     </span>
   );
