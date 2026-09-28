@@ -27,6 +27,9 @@ export function CourseDetail({ course }: { course: Course }) {
 
   const available = course.modes.includes(mode);
   const relatedRoles = openRoles.filter((r) => r.trackFit === course.track).slice(0, 3);
+  const modulesDone = Math.floor(
+    (course.modules.length * (enrollment?.progress ?? 0)) / 100,
+  );
 
   const statusFor = (skill: string) =>
     passport.find((p) => p.competency === skill)?.status ?? "not-started";
@@ -87,7 +90,7 @@ export function CourseDetail({ course }: { course: Course }) {
             <ul className="divide-y divide-ink-200">
               {course.modules.map((module, i) => {
                 const open = openModule === i;
-                const done = Boolean(enrollment) && i < 4;
+                const done = i < modulesDone;
                 return (
                   <li key={module.name}>
                     <button
@@ -241,19 +244,24 @@ export function CourseDetail({ course }: { course: Course }) {
                 );
               })}
 
-              <Button
-                onClick={handleEnroll}
-                disabled={!available || enrollment?.mode === mode}
-                variant={enrollment ? "outline" : "accent"}
-                size="lg"
-                className="mt-2 w-full"
-              >
-                {enrollment
-                  ? enrollment.mode === mode
-                    ? "You're enrolled"
-                    : `Switch to ${modeLabels[mode].toLowerCase()}`
-                  : `Enrol — ${modeLabels[mode]}`}
-              </Button>
+              {enrollment?.mode === mode ? (
+                <p className="mt-2 flex items-center justify-center gap-1.5 rounded-lg bg-ok-50 py-2.5 text-sm font-medium text-ok-600">
+                  <Check className="size-4" strokeWidth={2.5} />
+                  Enrolled {modeLabels[mode].toLowerCase()}
+                </p>
+              ) : (
+                <Button
+                  onClick={handleEnroll}
+                  disabled={!available}
+                  variant={enrollment ? "outline" : "accent"}
+                  size="lg"
+                  className="mt-2 w-full"
+                >
+                  {enrollment
+                    ? `Switch to ${modeLabels[mode].toLowerCase()}`
+                    : `Enrol — ${modeLabels[mode]}`}
+                </Button>
+              )}
 
               {enrollment ? (
                 <div className="border-t border-ink-200 pt-4">
