@@ -63,6 +63,8 @@ export interface PassportEntry {
   verifiedOn?: string;
   submittedOn?: string;
   employerViews: number;
+  /** File names attached when the evidence was submitted. */
+  attachments?: string[];
 }
 
 export interface Employer {
@@ -130,4 +132,61 @@ export interface CountryDemand {
   openRoles: number;
   topSkill: string;
   gap: number;
+}
+
+export interface Session {
+  role: Role;
+  name: string;
+}
+
+export interface Enrollment {
+  slug: string;
+  mode: DeliveryMode;
+  progress: number;
+  enrolledOn: string;
+}
+
+export interface CompassResult {
+  trackId: TrackId;
+  primarySlug: string;
+  alternateSlugs: string[];
+  mode: DeliveryMode;
+  reasons: string[];
+  openQuestion: string;
+  answers: Record<string, string>;
+}
+
+export interface Application {
+  roleId: string;
+  stage: ApplicationStage;
+  appliedOn: string;
+}
+
+/** Everything a learner accumulates, in the shape the UI renders it. */
+export interface LearnerState {
+  enrollments: Enrollment[];
+  compass: CompassResult | null;
+  passport: PassportEntry[];
+  applications: Application[];
+}
+
+export interface ProfileFields {
+  fullName: string;
+  headline: string;
+  cohort: string;
+  location: string;
+  avatarUrl: string | null;
+}
+
+/** An uploaded artefact, wherever it physically lives. */
+export interface StoredFile {
+  id: string;
+  name: string;
+  /** Storage object path, or the localStorage key in demo mode. */
+  path: string;
+  /** Something an `<img>` or `<a>` can point at right now. */
+  url: string;
+  mimeType: string;
+  sizeBytes: number;
+  uploadedAt: string;
 }

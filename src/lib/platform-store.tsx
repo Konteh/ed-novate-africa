@@ -7,44 +7,39 @@ import {
   useMemo,
   useSyncExternalStore,
 } from "react";
-import { courses, evidenceQueue, initialPassport, openRoles } from "./data";
+
+import { backend, usingSupabase, withLocalFallback } from "./backend";
+import { localBackend } from "./backend/local";
+import {
+  courses,
+  evidenceQueue,
+  initialPassport,
+  openRoles,
+  studentProfile,
+} from "./data";
 import type {
-  ApplicationStage,
+  Application,
+  CompassResult,
   DeliveryMode,
+  Enrollment,
+  LearnerState,
   PassportEntry,
+  ProfileFields,
   Role,
-  TrackId,
+  Session,
+  StoredFile,
 } from "./types";
 
-const STORAGE_KEY = "ed-novate-prototype-v1";
+export type {
+  Application,
+  CompassResult,
+  Enrollment,
+  ProfileFields,
+  Session,
+  StoredFile,
+};
 
-export interface Session {
-  role: Role;
-  name: string;
-}
-
-export interface Enrollment {
-  slug: string;
-  mode: DeliveryMode;
-  progress: number;
-  enrolledOn: string;
-}
-
-export interface CompassResult {
-  trackId: TrackId;
-  primarySlug: string;
-  alternateSlugs: string[];
-  mode: DeliveryMode;
-  reasons: string[];
-  openQuestion: string;
-  answers: Record<string, string>;
-}
-
-export interface Application {
-  roleId: string;
-  stage: ApplicationStage;
-  appliedOn: string;
-}
+const STORAGE_KEY = "ednovate-labs-prototype-v1";
 
 type EvidenceOutcome = "queued" | "verified" | "returned";
 
@@ -57,6 +52,8 @@ interface StoreState {
   applications: Application[];
   evidenceStatus: Record<string, EvidenceOutcome>;
   sentFeedback: Record<string, string>;
+  profile: ProfileFields;
+  files: StoredFile[];
 }
 
 const baseState: StoreState = {
@@ -79,11 +76,23 @@ const baseState: StoreState = {
     evidenceQueue.map((e) => [e.id, e.status]),
   ) as Record<string, EvidenceOutcome>,
   sentFeedback: {},
+  profile: {
+    fullName: studentProfile.name,
+    headline: "Data analytics learner, September 2026 cohort",
+    cohort: studentProfile.cohort,
+    location: studentProfile.location,
+    avatarUrl: null,
+  },
+  files: [],
 };
 
 /**
- * The prototype keeps its whole world in one external store so that a reader
- * can navigate, enrol, submit evidence and come back later without a backend.
+ * The app keeps its whole world in one external store so that a learner can
+ * navigate, enrol, submit evidence and come back later. localStorage is always
+ * the local cache: it paints instantly and needs no setup. When Supabase
+ * credentials exist the same state is mirrored to Postgres and Storage, so the
+ * work follows the learner to another device.
+ *
  * `useSyncExternalStore` lets the server render `baseState` and the browser
  * swap in the persisted copy after hydration, with no mismatch.
  */
@@ -115,8 +124,67 @@ function persist() {
   }
 }
 
+function learnerSlice(from: StoreState): LearnerState {
+  return {
+    enrollments: from.enrollments,
+    compass: from.compass,
+    passport: from.passport,
+    applications: from.applications,
+  };
+}
+
+// Enrolling, submitting and applying all fire in quick succession while a
+// learner clicks around. One write after things settle is plenty.
+let pushTimer: number | undefined;
+
+function scheduleRemotePush() {
+  if (!usingSupabase || typeof window === "undefined") return;
+  window.clearTimeout(pushTimer);
+  pushTimer = window.setTimeout(() => {
+    void backend.saveState(learnerSlice(state)).catch(() => {
+      // localStorage already holds this state; a failed sync is not fatal.
+    });
+  }, 600);
+}
+
 function emit() {
   for (const listener of listeners) listener();
+}
+
+let pulled = false;
+
+/** One-time read of whatever the backend already knows about this learner. */
+function pullRemote() {
+  if (pulled) return;
+  pulled = true;
+
+  void (async () => {
+    const [remoteState, remoteProfile, remoteFiles] = await Promise.all([
+      usingSupabase
+        ? withLocalFallback(
+            () => backend.loadState(),
+            async () => null,
+          )
+        : Promise.resolve(null),
+      withLocalFallback(
+        () => backend.loadProfile(),
+        () => localBackend.loadProfile(),
+      ),
+      withLocalFallback(
+        () => backend.listFiles(),
+        () => localBackend.listFiles(),
+      ),
+    ]);
+
+    if (!remoteState && !remoteProfile && remoteFiles.length === 0) return;
+
+    update((prev) => ({
+      ...prev,
+      ...(remoteState ?? {}),
+      profile: { ...prev.profile, ...(remoteProfile ?? {}) },
+      files: remoteFiles.length ? remoteFiles : prev.files,
+    }));
+  })();
 }
 
 function subscribe(listener: () => void) {
@@ -124,6 +192,7 @@ function subscribe(listener: () => void) {
     state = readPersisted();
     emit();
   }
+  pullRemote();
   listeners.add(listener);
   return () => {
     listeners.delete(listener);
@@ -156,13 +225,20 @@ function todayLabel() {
 }
 
 interface StoreValue extends StoreState {
+  /** True when a real database is behind the screens. */
+  remote: boolean;
   signIn: (role: Role) => void;
   signOut: () => void;
   enroll: (slug: string, mode: DeliveryMode) => void;
   isEnrolled: (slug: string) => boolean;
   enrollmentFor: (slug: string) => Enrollment | undefined;
   setCompass: (result: CompassResult | null) => void;
-  submitEvidence: (competency: string, title: string, summary: string) => void;
+  submitEvidence: (
+    competency: string,
+    title: string,
+    summary: string,
+    files?: StoredFile[],
+  ) => void;
   apply: (roleId: string) => void;
   applicationFor: (roleId: string) => Application | undefined;
   reviewEvidence: (
@@ -170,6 +246,10 @@ interface StoreValue extends StoreState {
     outcome: "verified" | "returned",
     feedback: string,
   ) => void;
+  updateProfile: (fields: Partial<ProfileFields>) => Promise<void>;
+  uploadAvatar: (file: File) => Promise<void>;
+  uploadFile: (file: File, competency?: string) => Promise<StoredFile>;
+  deleteFile: (file: StoredFile) => Promise<void>;
   resetDemo: () => void;
 }
 
@@ -187,7 +267,10 @@ export function PlatformProvider({ children }: { children: React.ReactNode }) {
       ...prev,
       session: {
         role,
-        name: role === "student" ? "Awa Sanneh" : "Fatoumatta Jallow",
+        name:
+          role === "student"
+            ? prev.profile.fullName || "Awa Sanneh"
+            : "Fatoumatta Jallow",
       },
     }));
   }, []);
@@ -214,14 +297,22 @@ export function PlatformProvider({ children }: { children: React.ReactNode }) {
         ],
       };
     });
+    scheduleRemotePush();
   }, []);
 
   const setCompass = useCallback((result: CompassResult | null) => {
     update((prev) => ({ ...prev, compass: result }));
+    scheduleRemotePush();
   }, []);
 
   const submitEvidence = useCallback(
-    (competency: string, title: string, summary: string) => {
+    (
+      competency: string,
+      title: string,
+      summary: string,
+      files: StoredFile[] = [],
+    ) => {
+      const attachments = files.map((f) => f.name);
       update((prev) => {
         if (prev.passport.some((p) => p.competency === competency)) {
           return {
@@ -234,6 +325,7 @@ export function PlatformProvider({ children }: { children: React.ReactNode }) {
                     evidenceTitle: title,
                     evidenceSummary: summary,
                     submittedOn: todayLabel(),
+                    attachments,
                   }
                 : p,
             ),
@@ -255,10 +347,12 @@ export function PlatformProvider({ children }: { children: React.ReactNode }) {
               status: "in-review",
               submittedOn: todayLabel(),
               employerViews: 0,
+              attachments,
             },
           ],
         };
       });
+      scheduleRemotePush();
     },
     [],
   );
@@ -274,6 +368,7 @@ export function PlatformProvider({ children }: { children: React.ReactNode }) {
         ],
       };
     });
+    scheduleRemotePush();
   }, []);
 
   const reviewEvidence = useCallback(
@@ -287,6 +382,48 @@ export function PlatformProvider({ children }: { children: React.ReactNode }) {
     [],
   );
 
+  const updateProfile = useCallback(async (fields: Partial<ProfileFields>) => {
+    update((prev) => ({ ...prev, profile: { ...prev.profile, ...fields } }));
+    await withLocalFallback(
+      () => backend.saveProfile(fields),
+      () => localBackend.saveProfile(fields),
+    );
+  }, []);
+
+  const uploadAvatar = useCallback(async (file: File) => {
+    const url = await withLocalFallback(
+      () => backend.uploadAvatar(file),
+      () => localBackend.uploadAvatar(file),
+    );
+    update((prev) => ({
+      ...prev,
+      profile: { ...prev.profile, avatarUrl: url },
+    }));
+  }, []);
+
+  const uploadFile = useCallback(
+    async (file: File, competency?: string) => {
+      const stored = await withLocalFallback(
+        () => backend.uploadFile(file, competency),
+        () => localBackend.uploadFile(file, competency),
+      );
+      update((prev) => ({ ...prev, files: [stored, ...prev.files] }));
+      return stored;
+    },
+    [],
+  );
+
+  const deleteFile = useCallback(async (file: StoredFile) => {
+    update((prev) => ({
+      ...prev,
+      files: prev.files.filter((f) => f.id !== file.id),
+    }));
+    await withLocalFallback(
+      () => backend.deleteFile(file),
+      () => localBackend.deleteFile(file),
+    );
+  }, []);
+
   const resetDemo = useCallback(() => {
     try {
       window.localStorage.removeItem(STORAGE_KEY);
@@ -299,6 +436,7 @@ export function PlatformProvider({ children }: { children: React.ReactNode }) {
   const value = useMemo<StoreValue>(
     () => ({
       ...snapshot,
+      remote: usingSupabase,
       signIn,
       signOut,
       enroll,
@@ -311,6 +449,10 @@ export function PlatformProvider({ children }: { children: React.ReactNode }) {
       applicationFor: (roleId) =>
         snapshot.applications.find((a) => a.roleId === roleId),
       reviewEvidence,
+      updateProfile,
+      uploadAvatar,
+      uploadFile,
+      deleteFile,
       resetDemo,
     }),
     [
@@ -322,6 +464,10 @@ export function PlatformProvider({ children }: { children: React.ReactNode }) {
       submitEvidence,
       apply,
       reviewEvidence,
+      updateProfile,
+      uploadAvatar,
+      uploadFile,
+      deleteFile,
       resetDemo,
     ],
   );
