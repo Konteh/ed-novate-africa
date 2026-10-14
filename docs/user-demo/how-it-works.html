@@ -1,0 +1,1479 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>How Ednovate Labs works</title>
+    <style>
+      @page {
+        size: A4;
+        margin: 0;
+      }
+
+      * {
+        box-sizing: border-box;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        background: #d5dbe3;
+        color: #161b23;
+        font-family: Inter, "Liberation Sans", sans-serif;
+        font-size: 15px;
+        line-height: 1.45;
+      }
+
+      .page {
+        width: 210mm;
+        height: 297mm;
+        margin: 0 auto 12px;
+        background: #fff;
+        position: relative;
+        overflow: hidden;
+        break-after: page;
+        page-break-after: always;
+      }
+
+      .page:last-child {
+        break-after: auto;
+        page-break-after: auto;
+        margin-bottom: 0;
+      }
+
+      .pad {
+        padding: 16mm 16mm 18mm;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+      }
+
+      h1,
+      h2,
+      h3,
+      p {
+        margin: 0;
+      }
+
+      h1 {
+        font-size: 40px;
+        line-height: 1.05;
+        letter-spacing: -0.03em;
+        font-weight: 650;
+      }
+
+      h2 {
+        font-size: 28px;
+        line-height: 1.12;
+        letter-spacing: -0.02em;
+        font-weight: 650;
+      }
+
+      h3 {
+        font-size: 16px;
+        line-height: 1.25;
+        font-weight: 650;
+      }
+
+      .muted {
+        color: #4e5765;
+      }
+
+      .kicker {
+        font-size: 12px;
+        font-weight: 650;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        color: #1a73e8;
+      }
+
+      .runfoot {
+        position: absolute;
+        left: 16mm;
+        right: 16mm;
+        bottom: 8mm;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 11px;
+        color: #6d7787;
+        border-top: 1px solid #e2e6ec;
+        padding-top: 6px;
+      }
+
+      .cover .runfoot {
+        color: #aecbfa;
+        border-top-color: rgba(255, 255, 255, 0.15);
+      }
+
+      /* ---------- cover ---------- */
+      .cover {
+        background: #0e2f6b;
+        color: white;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 650;
+        font-size: 15px;
+      }
+
+      .brand span.labs {
+        color: #fde293;
+      }
+
+      .cover h1 {
+        margin-top: 22mm;
+        max-width: 150mm;
+        font-size: 52px;
+        color: white;
+      }
+
+      .cover h1 em {
+        font-style: normal;
+        color: #8ab4f8;
+      }
+
+      .lede {
+        margin-top: 8mm;
+        max-width: 145mm;
+        font-size: 18px;
+        line-height: 1.45;
+        color: #d2e3fc;
+      }
+
+      .cover-foot {
+        margin-top: auto;
+      }
+
+      .whom {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin-bottom: 8mm;
+      }
+
+      .whom b {
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        color: white;
+        font-weight: 550;
+        font-size: 13px;
+        border-radius: 999px;
+        padding: 6px 12px;
+      }
+
+      /* ---------- bits ---------- */
+      .flow {
+        list-style: none;
+        margin: 7mm 0 0;
+        padding: 0;
+        position: relative;
+      }
+
+      .flow::before {
+        content: "";
+        position: absolute;
+        left: 15px;
+        top: 18px;
+        bottom: 18px;
+        width: 2px;
+        background: #d2e3fc;
+      }
+
+      .flow li {
+        display: grid;
+        grid-template-columns: 32px 1fr;
+        gap: 14px;
+        align-items: start;
+        margin: 0 0 5.5mm;
+        position: relative;
+      }
+
+      .flow.roomy li {
+        margin-bottom: 8.5mm;
+      }
+
+      .flow li:last-child {
+        margin-bottom: 0;
+      }
+
+      .n {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: #1a73e8;
+        color: white;
+        display: grid;
+        place-items: center;
+        font-size: 14px;
+        font-weight: 650;
+        position: relative;
+        z-index: 1;
+      }
+
+      .n.gold {
+        background: #fbbc04;
+        color: #161b23;
+      }
+
+      .n.green {
+        background: #1e8e3e;
+      }
+
+      .step h3 {
+        margin-bottom: 2px;
+      }
+
+      .step p {
+        color: #3a424f;
+        font-size: 14.5px;
+      }
+
+      .sink {
+        margin-top: auto;
+      }
+
+      .note {
+        margin-top: 7mm;
+        background: #fef7e0;
+        border-radius: 12px;
+        padding: 12px 14px;
+        font-size: 14.5px;
+        color: #3a424f;
+      }
+
+      .note strong {
+        color: #161b23;
+      }
+
+      .note.sink,
+      .split.sink {
+        margin-top: auto;
+      }
+
+      .two {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 5mm;
+        margin-top: 8mm;
+      }
+
+      .card {
+        border: 1px solid #e2e6ec;
+        border-radius: 14px;
+        padding: 16px 16px 14px;
+        background: white;
+      }
+
+      .card.student {
+        border-top: 4px solid #1a73e8;
+      }
+
+      .card.tutor {
+        border-top: 4px solid #fbbc04;
+      }
+
+      .who {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        margin-bottom: 10px;
+      }
+
+      .avatar {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        display: grid;
+        place-items: center;
+        font-weight: 650;
+        color: white;
+        background: #1a73e8;
+        flex: none;
+      }
+
+      .avatar.gold {
+        background: #fbbc04;
+        color: #161b23;
+      }
+
+      .who small {
+        display: block;
+        color: #6d7787;
+        font-size: 12px;
+        margin-top: 2px;
+      }
+
+      ul.plain {
+        margin: 8px 0 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      ul.plain li {
+        position: relative;
+        padding-left: 18px;
+        margin: 7px 0;
+        font-size: 14.5px;
+        color: #262d38;
+      }
+
+      ul.plain li::before {
+        content: "";
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: #1a73e8;
+        position: absolute;
+        left: 0;
+        top: 7px;
+      }
+
+      .card.tutor ul.plain li::before {
+        background: #e37400;
+      }
+
+      /* conversation */
+      .chat {
+        margin-top: 6mm;
+        display: grid;
+        grid-template-columns: 1.15fr 0.85fr;
+        gap: 6mm;
+        align-items: start;
+      }
+
+      .bubble {
+        background: #f3f7fe;
+        border-radius: 14px 14px 14px 4px;
+        padding: 10px 12px;
+        margin: 0 0 8px 40px;
+        font-size: 14.5px;
+      }
+
+      .reply {
+        margin: 0 40px 12px 0;
+        text-align: right;
+      }
+
+      .reply span {
+        display: inline-block;
+        background: #1a73e8;
+        color: white;
+        border-radius: 14px 14px 4px 14px;
+        padding: 8px 12px;
+        font-size: 14.5px;
+      }
+
+      .from {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 12px;
+        font-weight: 650;
+        color: #1a73e8;
+        margin-bottom: 4px;
+      }
+
+      .result {
+        background: #0e2f6b;
+        color: white;
+        border-radius: 14px;
+        padding: 16px;
+      }
+
+      .result .eyebrow {
+        color: #fde293;
+        font-size: 12px;
+        font-weight: 650;
+      }
+
+      .result h3 {
+        color: white;
+        font-size: 20px;
+        margin: 6px 0 8px;
+      }
+
+      .result p {
+        color: #d2e3fc;
+        font-size: 14px;
+      }
+
+      .qstrip {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 3mm;
+        margin-top: 7mm;
+      }
+
+      .qstrip div {
+        background: #f7f8fa;
+        border: 1px solid #e2e6ec;
+        border-radius: 10px;
+        padding: 8px 8px 10px;
+        min-height: 28mm;
+      }
+
+      .qstrip b {
+        display: block;
+        color: #1a73e8;
+        font-size: 12px;
+        margin-bottom: 4px;
+      }
+
+      .qstrip span {
+        font-size: 12.5px;
+        color: #262d38;
+        line-height: 1.35;
+      }
+
+      /* modes */
+      .modes {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 4mm;
+        margin-top: 7mm;
+      }
+
+      .mode {
+        border: 1px solid #e2e6ec;
+        border-radius: 14px;
+        overflow: hidden;
+        background: white;
+      }
+
+      .mode .art {
+        height: 38mm;
+        background: #e8f0fe;
+        display: grid;
+        place-items: center;
+      }
+
+      .mode .body {
+        padding: 12px 12px 14px;
+      }
+
+      .mode h3 {
+        margin-bottom: 4px;
+      }
+
+      .mode p {
+        font-size: 13.5px;
+        color: #3a424f;
+      }
+
+      .rule {
+        margin-top: auto;
+        background: #0e2f6b;
+        color: white;
+        border-radius: 14px;
+        padding: 14px 16px;
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: 12px;
+        align-items: center;
+      }
+
+      .rule strong {
+        display: block;
+        margin-bottom: 2px;
+      }
+
+      .rule p {
+        color: #d2e3fc;
+        font-size: 14px;
+      }
+
+      /* passport */
+      .passport {
+        margin-top: 6mm;
+        border-radius: 16px;
+        overflow: hidden;
+        border: 1px solid #e2e6ec;
+      }
+
+      .passport head,
+      .pass-head {
+        background: #0e2f6b;
+        color: white;
+        padding: 14px 16px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .pass-head .id {
+        font-family: "JetBrains Mono", ui-monospace, monospace;
+        font-size: 12px;
+        color: #fde293;
+      }
+
+      .pass-head p {
+        color: #d2e3fc;
+        font-size: 13px;
+        margin-top: 2px;
+      }
+
+      .rows {
+        display: grid;
+      }
+
+      .row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 9px 16px;
+        border-top: 1px solid #eef1f5;
+        font-size: 14.5px;
+      }
+
+      .pill {
+        font-size: 12px;
+        font-weight: 650;
+        border-radius: 999px;
+        padding: 3px 8px;
+      }
+
+      .pill.ok {
+        background: #e6f4ea;
+        color: #1e8e3e;
+      }
+
+      .pill.wait {
+        background: #fef7e0;
+        color: #b06000;
+      }
+
+      .pill.yet {
+        background: #eff1f5;
+        color: #4e5765;
+      }
+
+      .split {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 4mm;
+        margin-top: 5mm;
+      }
+
+      .split .card h3 {
+        margin-bottom: 4px;
+      }
+
+      .split .card p {
+        font-size: 14px;
+        color: #3a424f;
+      }
+
+      .eyes {
+        display: flex;
+        gap: 6px;
+        margin-top: 8px;
+        flex-wrap: wrap;
+      }
+
+      .eyes span {
+        font-size: 12px;
+        background: #e6f4ea;
+        color: #1e8e3e;
+        border-radius: 999px;
+        padding: 3px 8px;
+        font-weight: 650;
+      }
+
+      .eyes span.hide {
+        background: #eff1f5;
+        color: #9aa4b3;
+        text-decoration: line-through;
+        font-weight: 550;
+      }
+
+      /* branch */
+      .branch {
+        margin-top: 6mm;
+        display: grid;
+        grid-template-columns: 1fr 24px 1fr;
+        gap: 3mm;
+        align-items: stretch;
+      }
+
+      .choice {
+        border-radius: 14px;
+        padding: 14px;
+      }
+
+      .choice.yes {
+        background: #e6f4ea;
+      }
+
+      .choice.no {
+        background: #fef7e0;
+      }
+
+      .choice h3 {
+        margin-bottom: 4px;
+      }
+
+      .choice p {
+        font-size: 14px;
+        color: #3a424f;
+      }
+
+      .spine {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        color: #1a73e8;
+        font-weight: 650;
+      }
+
+      .job {
+        margin-top: 6mm;
+        display: grid;
+        grid-template-columns: 1.2fr 0.8fr;
+        gap: 5mm;
+        align-items: stretch;
+      }
+
+      .role {
+        background: #0e2f6b;
+        color: white;
+        border-radius: 16px;
+        padding: 16px 18px;
+      }
+
+      .role .where {
+        color: #d2e3fc;
+        font-size: 13px;
+        margin-top: 3px;
+      }
+
+      .score {
+        margin-top: 12px;
+        display: flex;
+        align-items: baseline;
+        gap: 8px;
+      }
+
+      .score b {
+        font-size: 36px;
+        letter-spacing: -0.03em;
+        color: #fde293;
+      }
+
+      .score span {
+        color: #d2e3fc;
+        font-size: 13px;
+      }
+
+      .why p {
+        font-size: 14.5px;
+        color: #3a424f;
+        margin-top: 6px;
+      }
+
+      .chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-top: 10px;
+      }
+
+      .chips span {
+        font-size: 12px;
+        border-radius: 999px;
+        padding: 3px 8px;
+        background: rgba(255, 255, 255, 0.12);
+        color: white;
+      }
+
+      .chips span.miss {
+        background: transparent;
+        border: 1px dashed rgba(255, 255, 255, 0.35);
+        color: #aecbfa;
+      }
+
+      /* loop */
+      .loop {
+        margin-top: 6mm;
+        display: grid;
+        grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr;
+        gap: 2.5mm;
+        align-items: center;
+      }
+
+      .loop .box {
+        background: #f3f7fe;
+        border: 1px solid #d2e3fc;
+        border-radius: 12px;
+        padding: 10px;
+        min-height: 32mm;
+      }
+
+      .loop .box strong {
+        display: block;
+        margin-bottom: 3px;
+      }
+
+      .loop .box p {
+        font-size: 12.5px;
+        color: #3a424f;
+      }
+
+      .arrow {
+        color: #1a73e8;
+        font-size: 20px;
+        font-weight: 650;
+      }
+
+      .morning {
+        display: grid;
+        grid-template-columns: 1fr 18px 1fr 18px 1fr;
+        gap: 2mm;
+        align-items: stretch;
+        margin-top: 6mm;
+      }
+
+      .morning article {
+        border: 1px solid #e2e6ec;
+        border-radius: 14px;
+        padding: 12px;
+      }
+
+      .morning .num {
+        font-size: 12px;
+        font-weight: 650;
+        color: #1a73e8;
+      }
+
+      .morning h3 {
+        margin: 4px 0;
+      }
+
+      .morning p {
+        font-size: 13px;
+        color: #3a424f;
+      }
+
+      .morning .join {
+        display: grid;
+        place-items: center;
+        color: #1a73e8;
+        font-size: 20px;
+        font-weight: 650;
+      }
+
+      /* try */
+      .doors {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 5mm;
+        margin-top: 7mm;
+      }
+
+      .door {
+        border-radius: 16px;
+        padding: 16px;
+        color: white;
+        min-height: 62mm;
+      }
+
+      .door.s {
+        background: #1a73e8;
+      }
+
+      .door.t {
+        background: #0e2f6b;
+      }
+
+      .door h3 {
+        color: white;
+        font-size: 20px;
+      }
+
+      .cred {
+        margin-top: 12px;
+        background: rgba(255, 255, 255, 0.12);
+        border-radius: 10px;
+        padding: 10px 12px;
+        font-size: 14px;
+      }
+
+      .cred div {
+        display: flex;
+        justify-content: space-between;
+        margin: 3px 0;
+      }
+
+      .cred b {
+        font-family: "JetBrains Mono", ui-monospace, monospace;
+        font-weight: 650;
+      }
+
+      .door p {
+        margin-top: 10px;
+        color: #e8f0fe;
+        font-size: 14px;
+      }
+
+      .quiet {
+        margin-top: auto;
+        font-size: 12.5px;
+        color: #6d7787;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- 1. Cover -->
+    <section class="page cover">
+      <div class="pad">
+        <div class="brand">
+          <svg width="36" height="36" viewBox="0 0 36 36" aria-hidden="true">
+            <rect width="36" height="36" rx="10" fill="#1a73e8" />
+            <circle cx="28" cy="28" r="8" fill="#fbbc04" />
+            <path d="M8 15.2 18 10l10 5.2-10 5.2L8 15.2Z" fill="none" stroke="white" stroke-width="1.7" />
+            <path d="M12 18.2v5.2c0 1.6 2.6 3 6 3s6-1.4 6-3v-5.2" fill="none" stroke="white" stroke-width="1.7" stroke-linecap="round" />
+          </svg>
+          Ednovate <span class="labs">Labs</span>
+        </div>
+
+        <h1>How the platform works, <em>in pictures.</em></h1>
+        <p class="lede">
+          A learner chooses a course, does the work, and a tutor checks it.
+          An employer only sees the skills a person has signed. This guide
+          follows one learner from the first question to a job.
+        </p>
+
+        <div class="cover-foot">
+          <svg viewBox="0 0 680 168" width="100%" height="148" aria-hidden="true">
+            <path d="M40 84 H160" stroke="#8ab4f8" stroke-width="3" fill="none" />
+            <path d="M200 84 H320" stroke="#8ab4f8" stroke-width="3" fill="none" />
+            <path d="M360 84 H480" stroke="#8ab4f8" stroke-width="3" fill="none" />
+            <path d="M520 84 H640" stroke="#8ab4f8" stroke-width="3" fill="none" />
+            <g font-family="Inter, sans-serif" font-size="13" fill="white" text-anchor="middle">
+              <circle cx="40" cy="84" r="22" fill="#1a73e8" />
+              <text x="40" y="89" font-weight="700">1</text>
+              <text x="40" y="124" fill="#d2e3fc">Ask</text>
+
+              <circle cx="200" cy="84" r="22" fill="#1a73e8" />
+              <text x="200" y="89" font-weight="700">2</text>
+              <text x="200" y="124" fill="#d2e3fc">Learn</text>
+
+              <circle cx="360" cy="84" r="22" fill="#fbbc04" />
+              <text x="360" y="89" font-weight="700" fill="#161b23">3</text>
+              <text x="360" y="124" fill="#d2e3fc">A tutor signs</text>
+
+              <circle cx="520" cy="84" r="22" fill="#1e8e3e" />
+              <text x="520" y="89" font-weight="700">4</text>
+              <text x="520" y="124" fill="#d2e3fc">A job sees it</text>
+
+              <circle cx="640" cy="84" r="8" fill="#fde293" />
+            </g>
+          </svg>
+          <div class="whom">
+            <b>Learners and families</b>
+            <b>Tutors</b>
+            <b>Employers</b>
+            <b>Programme partners</b>
+          </div>
+        </div>
+
+        <div class="runfoot">
+          <span>Ednovate Labs · The Gambia and ECOWAS</span>
+          <span>1</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. The path -->
+    <section class="page">
+      <div class="pad">
+        <p class="kicker">The whole path</p>
+        <h2 style="margin-top: 6px">Follow Awa, from a question to a job.</h2>
+        <p class="muted" style="margin-top: 8px; max-width: 165mm">
+          Awa Sanneh lives in Kanifing. She wants work that uses numbers, and
+          she does not know which course to start. Every screen in the demo
+          is a step on this line.
+        </p>
+
+        <ol class="flow roomy">
+          <li>
+            <span class="n">1</span>
+            <div class="step">
+              <h3>Career Compass asks five questions</h3>
+              <p>What she enjoys, where she is starting, how she learns best, how much time she really has, and what would make it worth it.</p>
+            </div>
+          </li>
+          <li>
+            <span class="n">2</span>
+            <div class="step">
+              <h3>She gets a course, and she can say no</h3>
+              <p>The suggestion is Data Analytics Foundations, onsite at the Kanifing lab. Awa chooses. The guide does not enrol her.</p>
+            </div>
+          </li>
+          <li>
+            <span class="n">3</span>
+            <div class="step">
+              <h3>She learns by doing a real task</h3>
+              <p>A module ends when she can do the thing — clean a messy list, write a query, explain a chart — not when the weeks run out.</p>
+            </div>
+          </li>
+          <li>
+            <span class="n gold">4</span>
+            <div class="step">
+              <h3>Her tutor reads the work and signs the skill</h3>
+              <p>Fatoumatta Jallow checks what Awa submits. She can sign it, or send it back with a note. A computer never signs a skill.</p>
+            </div>
+          </li>
+          <li>
+            <span class="n green">5</span>
+            <div class="step">
+              <h3>An employer sees the signed skills, and the reason</h3>
+              <p>A match says why it was made, and which skill is still missing. Work that is still with the tutor stays hidden.</p>
+            </div>
+          </li>
+        </ol>
+
+        <div class="note sink">
+          <strong>One record, not a new certificate every course.</strong>
+          The Skills Passport keeps growing. A later course adds to it. It does not wipe the page clean.
+        </div>
+
+        <div class="runfoot">
+          <span>Ednovate Labs</span>
+          <span>How it works</span>
+          <span>2</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. Two doors -->
+    <section class="page">
+      <div class="pad">
+        <p class="kicker">Who it is for</p>
+        <h2 style="margin-top: 6px">Two doors. The same record behind both.</h2>
+        <p class="muted" style="margin-top: 8px; max-width: 160mm">
+          A learner and a tutor never look at the same screen, but they are
+          looking at the same piece of work.
+        </p>
+
+        <div class="two">
+          <article class="card student">
+            <div class="who">
+              <div class="avatar">AS</div>
+              <div>
+                <strong>Awa Sanneh</strong>
+                <small>Learner · Kanifing · Data, Sept 2026</small>
+              </div>
+            </div>
+            <svg viewBox="0 0 280 90" width="100%" height="78" aria-hidden="true">
+              <rect x="8" y="18" width="70" height="52" rx="8" fill="#e8f0fe" />
+              <circle cx="28" cy="38" r="8" fill="#1a73e8" />
+              <rect x="42" y="32" width="26" height="5" rx="2" fill="#1a73e8" />
+              <rect x="42" y="42" width="18" height="4" rx="2" fill="#aecbfa" />
+              <path d="M86 44 H120" stroke="#1a73e8" stroke-width="2" />
+              <rect x="122" y="14" width="70" height="60" rx="8" fill="#0e2f6b" />
+              <rect x="132" y="26" width="50" height="6" rx="2" fill="#fde293" />
+              <rect x="132" y="38" width="40" height="4" rx="2" fill="#8ab4f8" />
+              <rect x="132" y="48" width="34" height="4" rx="2" fill="#8ab4f8" />
+              <path d="M200 44 H230" stroke="#1e8e3e" stroke-width="2" />
+              <circle cx="248" cy="44" r="16" fill="#e6f4ea" />
+              <path d="M240 44 l5 5 10-11" fill="none" stroke="#1e8e3e" stroke-width="2.4" stroke-linecap="round" />
+            </svg>
+            <ul class="plain">
+              <li>Answer five questions and get a suggested first course.</li>
+              <li>Learn in a lab, live with a tutor, or on her own hours.</li>
+              <li>Hand in the work, with the file attached.</li>
+              <li>Share a link that shows only signed skills.</li>
+            </ul>
+          </article>
+
+          <article class="card tutor">
+            <div class="who">
+              <div class="avatar gold">FJ</div>
+              <div>
+                <strong>Fatoumatta Jallow</strong>
+                <small>Lead tutor · Ednovate Lab, Kanifing</small>
+              </div>
+            </div>
+            <svg viewBox="0 0 280 90" width="100%" height="78" aria-hidden="true">
+              <rect x="8" y="16" width="78" height="58" rx="8" fill="#fef7e0" />
+              <rect x="18" y="28" width="58" height="6" rx="2" fill="#e37400" />
+              <rect x="18" y="40" width="48" height="4" rx="2" fill="#fde293" />
+              <rect x="18" y="50" width="40" height="4" rx="2" fill="#fde293" />
+              <path d="M96 44 H128" stroke="#e37400" stroke-width="2" />
+              <rect x="130" y="12" width="64" height="66" rx="8" fill="#fff" stroke="#e2e6ec" />
+              <circle cx="150" cy="32" r="8" fill="#1a73e8" />
+              <rect x="164" y="28" width="20" height="4" rx="2" fill="#cbd2dc" />
+              <rect x="142" y="48" width="40" height="4" rx="2" fill="#e2e6ec" />
+              <rect x="142" y="58" width="28" height="4" rx="2" fill="#e6f4ea" />
+              <path d="M204 44 H230" stroke="#0e2f6b" stroke-width="2" />
+              <rect x="232" y="22" width="40" height="44" rx="6" fill="#0e2f6b" />
+              <rect x="240" y="32" width="24" height="4" rx="1" fill="#fde293" />
+              <rect x="240" y="40" width="18" height="3" rx="1" fill="#8ab4f8" />
+              <rect x="240" y="48" width="20" height="3" rx="1" fill="#8ab4f8" />
+            </svg>
+            <ul class="plain">
+              <li>See the whole cohort, and who needs a conversation.</li>
+              <li>Read the work in a queue. Edit the feedback. Then send it.</li>
+              <li>See which skills the region has, and which jobs are open.</li>
+            </ul>
+          </article>
+        </div>
+
+        <div class="note sink">
+          <strong>Nothing is awarded for turning up.</strong>
+          Attendance is not the record. The record is a skill Fatoumatta has agreed Awa can do.
+        </div>
+
+        <div class="runfoot">
+          <span>Ednovate Labs</span>
+          <span>How it works</span>
+          <span>3</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. Compass -->
+    <section class="page">
+      <div class="pad">
+        <p class="kicker">Step 1 · Career Compass</p>
+        <h2 style="margin-top: 6px">Five questions. A suggestion. Her decision.</h2>
+        <p class="muted" style="margin-top: 8px; max-width: 165mm">
+          The compass is a short conversation, about four minutes. It narrows
+          the choice. It does not make it.
+        </p>
+
+        <div class="chat">
+          <div>
+            <div class="from">
+              <svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><circle cx="11" cy="11" r="11" fill="#1a73e8"/><path d="M7 11.5 9.2 14 15 8" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round"/></svg>
+              Compass
+            </div>
+            <div class="bubble">What excites you about tech?</div>
+            <div class="reply"><span>Working with data</span></div>
+
+            <div class="from">
+              <svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><circle cx="11" cy="11" r="11" fill="#1a73e8"/><path d="M7 11.5 9.2 14 15 8" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round"/></svg>
+              Compass
+            </div>
+            <div class="bubble">How do you learn best?</div>
+            <div class="reply"><span>Onsite, with classmates</span></div>
+
+            <div class="from">
+              <svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><circle cx="11" cy="11" r="11" fill="#1a73e8"/><path d="M7 11.5 9.2 14 15 8" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round"/></svg>
+              Compass
+            </div>
+            <div class="bubble">How much time can you really give each week?</div>
+            <div class="reply"><span>5 to 10 hours</span></div>
+          </div>
+
+          <aside class="result">
+            <div class="eyebrow">Suggested start</div>
+            <h3>Data Analytics Foundations</h3>
+            <p>Onsite, at the Ednovate Lab in Kanifing. Twelve weeks. A tutor in the room.</p>
+            <p style="margin-top: 10px">Awa can pick a different course, or a different way to learn. The suggestion stays on the page so she can come back to it.</p>
+          </aside>
+        </div>
+
+        <div class="qstrip">
+          <div><b>1</b><span>What excites you?</span></div>
+          <div><b>2</b><span>Where are you starting from?</span></div>
+          <div><b>3</b><span>How do you learn best?</span></div>
+          <div><b>4</b><span>How much time do you really have?</span></div>
+          <div><b>5</b><span>What would make this worth it?</span></div>
+        </div>
+
+        <div class="runfoot">
+          <span>Ednovate Labs</span>
+          <span>How it works</span>
+          <span>4</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. Learning -->
+    <section class="page">
+      <div class="pad">
+        <p class="kicker">Step 2 · Learning Studio</p>
+        <h2 style="margin-top: 6px">The same course, three ways to take it.</h2>
+        <p class="muted" style="margin-top: 8px">
+          Awa picks the way that fits her week. She can switch later. The skills at the end are the same.
+        </p>
+
+        <div class="modes">
+          <article class="mode">
+            <div class="art">
+              <svg width="120" height="84" viewBox="0 0 120 84" aria-hidden="true">
+                <rect x="18" y="28" width="84" height="44" rx="4" fill="#1a73e8" />
+                <polygon points="10,32 60,8 110,32" fill="#0e2f6b" />
+                <rect x="52" y="46" width="16" height="26" fill="#fde293" />
+                <rect x="28" y="42" width="14" height="12" fill="white" opacity="0.85" />
+                <rect x="78" y="42" width="14" height="12" fill="white" opacity="0.85" />
+              </svg>
+            </div>
+            <div class="body">
+              <h3>Onsite</h3>
+              <p>In a lab, with a tutor and classmates. Kanifing, Banjul, Serrekunda and Janjanbureh.</p>
+            </div>
+          </article>
+          <article class="mode">
+            <div class="art" style="background:#fef7e0">
+              <svg width="120" height="84" viewBox="0 0 120 84" aria-hidden="true">
+                <rect x="22" y="14" width="76" height="48" rx="6" fill="#0e2f6b" />
+                <rect x="28" y="20" width="64" height="36" rx="3" fill="#e8f0fe" />
+                <circle cx="46" cy="34" r="6" fill="#1a73e8" />
+                <rect x="56" y="30" width="28" height="4" rx="2" fill="#1a73e8" />
+                <rect x="56" y="38" width="20" height="3" rx="1.5" fill="#aecbfa" />
+                <rect x="46" y="62" width="28" height="6" rx="2" fill="#0e2f6b" />
+              </svg>
+            </div>
+            <div class="body">
+              <h3>Live, with a tutor</h3>
+              <p>Classes at a set time, joined from home. A person is teaching. It is not a recording.</p>
+            </div>
+          </article>
+          <article class="mode">
+            <div class="art" style="background:#e6f4ea">
+              <svg width="120" height="84" viewBox="0 0 120 84" aria-hidden="true">
+                <circle cx="60" cy="42" r="28" fill="none" stroke="#1e8e3e" stroke-width="4" />
+                <path d="M60 42 V22" stroke="#0e2f6b" stroke-width="3" stroke-linecap="round" />
+                <path d="M60 42 H76" stroke="#fbbc04" stroke-width="3" stroke-linecap="round" />
+                <circle cx="60" cy="42" r="3" fill="#0e2f6b" />
+              </svg>
+            </div>
+            <div class="body">
+              <h3>At her own pace</h3>
+              <p>She moves through it in the hours she actually has. Around a job, or around school.</p>
+            </div>
+          </article>
+        </div>
+
+        <div style="height: 6mm"></div>
+        <div class="rule">
+          <svg width="42" height="42" viewBox="0 0 42 42" aria-hidden="true">
+            <circle cx="21" cy="21" r="21" fill="#fbbc04" />
+            <path d="M12 21.5 18 28 30 14" fill="none" stroke="#161b23" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+          <div>
+            <strong>Finished means she can do it.</strong>
+            <p>Each module ends with a piece of work that goes into the passport. Sitting through the class is not enough, and it is not the thing an employer is shown.</p>
+          </div>
+        </div>
+
+        <div class="runfoot">
+          <span>Ednovate Labs</span>
+          <span>How it works</span>
+          <span>5</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. Passport -->
+    <section class="page">
+      <div class="pad">
+        <p class="kicker">Step 3 · Skills Passport</p>
+        <h2 style="margin-top: 6px">A record of what she can do, not where she sat.</h2>
+        <p class="muted" style="margin-top: 8px; max-width: 168mm">
+          Awa’s passport travels with her from course to course. She can add her
+          photo and attach the real file — a spreadsheet, a memo, a notebook.
+        </p>
+
+        <div class="passport">
+          <div class="pass-head">
+            <div>
+              <strong>Awa Sanneh</strong>
+              <p>Data · Sept 2026 · Kanifing</p>
+            </div>
+            <div class="id">ENL-GM-2026-04182</div>
+          </div>
+          <div class="rows">
+            <div class="row"><span>Data profiling</span><span class="pill ok">Signed</span></div>
+            <div class="row"><span>Data cleaning</span><span class="pill ok">Signed</span></div>
+            <div class="row"><span>SQL querying</span><span class="pill ok">Signed</span></div>
+            <div class="row"><span>Dashboard design</span><span class="pill wait">With the tutor</span></div>
+            <div class="row"><span>Data storytelling</span><span class="pill yet">Not started</span></div>
+          </div>
+        </div>
+
+        <div class="split sink">
+          <article class="card">
+            <h3>What Awa sees</h3>
+            <p>Everything. Signed skills, work still being checked, and skills she has not started. She can see who signed each one, and when.</p>
+          </article>
+          <article class="card">
+            <h3>What an employer sees</h3>
+            <p>Only the signed skills. The link she shares hides anything still in review. There is a button that shows this view, so she can check it herself.</p>
+            <div class="eyes">
+              <span>Data profiling</span>
+              <span>Data cleaning</span>
+              <span>SQL</span>
+              <span class="hide">Dashboard</span>
+            </div>
+          </article>
+        </div>
+
+        <div class="runfoot">
+          <span>Ednovate Labs</span>
+          <span>How it works</span>
+          <span>6</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. Signing -->
+    <section class="page">
+      <div class="pad">
+        <p class="kicker">The moment that matters</p>
+        <h2 style="margin-top: 6px">A person signs the skill. The screen does not.</h2>
+        <p class="muted" style="margin-top: 8px; max-width: 165mm">
+          Awa writes what she did and what she decided, and attaches the file.
+          Then it leaves her hands.
+        </p>
+
+        <ol class="flow" style="margin-top: 6mm">
+          <li>
+            <span class="n">1</span>
+            <div class="step">
+              <h3>Awa sends the work</h3>
+              <p>A title a reviewer would recognise, a few sentences on what she found, and the file itself.</p>
+            </div>
+          </li>
+          <li>
+            <span class="n">2</span>
+            <div class="step">
+              <h3>It waits in Fatoumatta’s queue</h3>
+              <p>The tutor sees the task, the file, and a draft note she is free to rewrite. The draft is a starting point, not the decision.</p>
+            </div>
+          </li>
+        </ol>
+
+        <div class="branch">
+          <article class="choice yes">
+            <h3>She signs it</h3>
+            <p>The skill turns green on the passport. Awa’s name, the tutor’s name, and the date stay on it. Employers can now see that line.</p>
+          </article>
+          <div class="spine">or</div>
+          <article class="choice no">
+            <h3>She sends it back</h3>
+            <p>Awa gets a note on what to fix. The skill stays off the public record until the work is signed. Nothing is quietly approved.</p>
+          </article>
+        </div>
+
+        <div class="note sink">
+          <strong>Within two working days.</strong>
+          That is the promise on the submission screen. The queue on the tutor’s home page shows how many pieces of work are still waiting.
+        </div>
+
+        <div class="runfoot">
+          <span>Ednovate Labs</span>
+          <span>How it works</span>
+          <span>7</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. Jobs -->
+    <section class="page">
+      <div class="pad">
+        <p class="kicker">Step 4 · Talent Bridge</p>
+        <h2 style="margin-top: 6px">A job match that says why.</h2>
+        <p class="muted" style="margin-top: 8px; max-width: 165mm">
+          Employers look for signed skills, not the name of a certificate.
+          Every match explains itself in a sentence Awa can read.
+        </p>
+
+        <div class="job">
+          <article class="role">
+            <div class="eyebrow" style="color:#fde293;font-size:12px;font-weight:650">Example role in the demo</div>
+            <h3 style="color:white;font-size:24px;margin-top:6px">Junior Data Analyst</h3>
+            <p class="where">Banjul · Hybrid · a data team</p>
+            <div class="chips">
+              <span>SQL querying</span>
+              <span>Data cleaning</span>
+              <span class="miss">Dashboard design</span>
+            </div>
+            <div class="score">
+              <b>3 of 4</b>
+              <span>skills they ask for are already signed</span>
+            </div>
+          </article>
+          <article class="card why">
+            <h3>The reason, in plain words</h3>
+            <p>Three of the skills this role screens on are already signed in Awa’s passport. Dashboard design is still with her tutor, so the match says so instead of hiding it.</p>
+            <p>She can ask for an introduction. The stage of that conversation — introduced, interviewing, offer — stays on the same page.</p>
+          </article>
+        </div>
+
+        <svg viewBox="0 0 680 150" width="100%" height="132" style="margin-top: auto" aria-label="Flow from signed skills to an introduction">
+          <defs>
+            <marker id="ah" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+              <path d="M0 0 L7 3 L0 6 Z" fill="#1a73e8" />
+            </marker>
+          </defs>
+          <line x1="150" y1="46" x2="210" y2="46" stroke="#1a73e8" stroke-width="2" marker-end="url(#ah)" />
+          <line x1="370" y1="46" x2="430" y2="46" stroke="#1a73e8" stroke-width="2" marker-end="url(#ah)" />
+          <line x1="560" y1="46" x2="600" y2="46" stroke="#1a73e8" stroke-width="2" marker-end="url(#ah)" />
+          <rect x="16" y="16" width="134" height="60" rx="10" fill="#e6f4ea" />
+          <rect x="214" y="16" width="156" height="60" rx="10" fill="#e8f0fe" />
+          <rect x="434" y="16" width="126" height="60" rx="10" fill="#0e2f6b" />
+          <rect x="604" y="16" width="60" height="60" rx="10" fill="#fef7e0" />
+          <g font-family="Inter, sans-serif" font-size="13" fill="#161b23">
+            <text x="83" y="42" text-anchor="middle" font-weight="700">Signed skills</text>
+            <text x="83" y="60" text-anchor="middle" font-size="11" fill="#3a424f">from the passport</text>
+            <text x="292" y="42" text-anchor="middle" font-weight="700">Open roles</text>
+            <text x="292" y="60" text-anchor="middle" font-size="11" fill="#3a424f">and the skills they ask for</text>
+            <text x="497" y="42" text-anchor="middle" font-weight="700" fill="white">The reason</text>
+            <text x="497" y="60" text-anchor="middle" font-size="11" fill="#d2e3fc">written out</text>
+            <text x="634" y="50" text-anchor="middle" font-weight="700" font-size="12">Intro</text>
+          </g>
+        </svg>
+
+        <div class="runfoot">
+          <span>Ednovate Labs</span>
+          <span>How it works</span>
+          <span>8</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 9. Tutor -->
+    <section class="page">
+      <div class="pad">
+        <p class="kicker">The tutor’s morning</p>
+        <h2 style="margin-top: 6px">Three screens. Then the picture feeds back.</h2>
+        <p class="muted" style="margin-top: 8px; max-width: 168mm">
+          Fatoumatta does not start from a spreadsheet she maintains herself.
+          The morning is the same three stops, in this order.
+        </p>
+
+        <div class="morning">
+          <article>
+            <div class="num">01</div>
+            <h3>The roster</h3>
+            <p>Every learner, the course, how far they are, and a plain flag: on track, worth a conversation, or at risk.</p>
+          </article>
+          <div class="join">→</div>
+          <article>
+            <div class="num">02</div>
+            <h3>The queue</h3>
+            <p>Work waiting to be read. She checks it against the task, rewrites the note if she wants, then signs or returns it.</p>
+          </article>
+          <div class="join">→</div>
+          <article>
+            <div class="num">03</div>
+            <h3>The region</h3>
+            <p>Signed skills set against open roles, country by country across ECOWAS. No learner’s name is on this page.</p>
+          </article>
+        </div>
+
+        <h3 style="margin-top: 9mm">The loop closes</h3>
+        <p class="muted" style="margin-top: 4px">What the region is short of becomes the next course to open. The passport is not the end of the story.</p>
+
+        <div class="loop">
+          <div class="box">
+            <strong>Learn</strong>
+            <p>A course matched to the person, and to a gap.</p>
+          </div>
+          <div class="arrow">→</div>
+          <div class="box">
+            <strong>Prove</strong>
+            <p>A tutor signs the skill, or sends it back.</p>
+          </div>
+          <div class="arrow">→</div>
+          <div class="box">
+            <strong>Hire</strong>
+            <p>An employer sees the proof and the reason.</p>
+          </div>
+          <div class="arrow">→</div>
+          <div class="box" style="background:#fef7e0;border-color:#fde293">
+            <strong>Teach the gap</strong>
+            <p>The region shows what to run next.</p>
+          </div>
+        </div>
+
+        <div class="note">
+          <strong>An example, so the picture is easy to read.</strong>
+          The Gambia might have many people who can clean data, and few jobs asking for it. A neighbour might have the jobs and not the people. That is the chart. It is counts, not names.
+        </div>
+
+        <div class="runfoot">
+          <span>Ednovate Labs</span>
+          <span>How it works</span>
+          <span>9</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 10. Try -->
+    <section class="page">
+      <div class="pad">
+        <p class="kicker">Try the demo</p>
+        <h2 style="margin-top: 6px">Open it and click. Nothing here is a real record.</h2>
+        <p class="muted" style="margin-top: 8px; max-width: 165mm">
+          The people, courses, tutors and salaries are examples, so you can
+          look around freely. Sign in is already filled in. Press Log in.
+        </p>
+
+        <div class="doors">
+          <article class="door s">
+            <h3>I’m a learner</h3>
+            <p>Start with Career Compass. Answer the five questions and see the course it suggests.</p>
+            <div class="cred">
+              <div><span>Name</span><b>student</b></div>
+              <div><span>Password</span><b>student2026</b></div>
+            </div>
+          </article>
+          <article class="door t">
+            <h3>I’m a tutor</h3>
+            <p>Open the evidence queue and sign or return a piece of work. Then look at the region.</p>
+            <div class="cred">
+              <div><span>Name</span><b>educator</b></div>
+              <div><span>Password</span><b>educator2026</b></div>
+            </div>
+          </article>
+        </div>
+
+        <h3 style="margin-top: 8mm">A good first ten minutes</h3>
+        <ol class="flow" style="margin-top: 4mm">
+          <li>
+            <span class="n">1</span>
+            <div class="step">
+              <h3>As Awa, answer the compass</h3>
+              <p>Notice that you can disagree with the suggestion.</p>
+            </div>
+          </li>
+          <li>
+            <span class="n">2</span>
+            <div class="step">
+              <h3>Open the passport and switch to the employer view</h3>
+              <p>The skills still with the tutor disappear. That is what a shared link shows.</p>
+            </div>
+          </li>
+          <li>
+            <span class="n gold">3</span>
+            <div class="step">
+              <h3>Switch to the tutor and open the queue</h3>
+              <p>Read one piece of work. Sign it, or send it back. The learner’s passport changes.</p>
+            </div>
+          </li>
+        </ol>
+
+        <p class="quiet">
+          Labs in the demo: Kanifing, Banjul, Serrekunda, Janjanbureh. Reset demo data, in the side menu, puts everything back.
+        </p>
+
+        <div class="runfoot">
+          <span>Ednovate Labs</span>
+          <span>How it works</span>
+          <span>10</span>
+        </div>
+      </div>
+    </section>
+  </body>
+</html>

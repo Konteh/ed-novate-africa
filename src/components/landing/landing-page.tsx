@@ -2,13 +2,11 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { ArrowRight, Check, MapPin } from "lucide-react";
 import { AuthDialog } from "@/components/auth-dialog";
 import { FeaturedCourses } from "@/components/landing/featured-courses";
 import { HeroDemo } from "@/components/landing/hero-demo";
-import { WordmarkLight } from "@/components/brand";
-import ednovateLogo from "@/images/ednovate.png";
+import { Wordmark, WordmarkLight } from "@/components/brand";
 import { Button } from "@/components/ui/button";
 import { LinkButton } from "@/components/app/link-button";
 import { usePlatform } from "@/lib/platform-store";
@@ -128,6 +126,15 @@ export function LandingPage() {
         </div>
       </header>
 
+      <a
+        href="/download/guide"
+        download="How-Ednovate-Labs-works.pdf"
+        className="sticky top-16 z-30 flex items-center justify-center gap-2 bg-gold-400 px-4 py-3 text-sm font-semibold text-ink-900 hover:bg-gold-300"
+      >
+        <Download className="size-4" />
+        Download the picture guide (PDF)
+      </a>
+
       <section className="relative overflow-hidden border-b border-ink-200">
         <div
           aria-hidden
@@ -146,7 +153,7 @@ export function LandingPage() {
               employers hire from that record.
             </p>
 
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
               <Button size="xl" onClick={() => openAuth("student")}>
                 I’m a student
                 <ArrowRight />
@@ -158,6 +165,14 @@ export function LandingPage() {
               >
                 I’m an educator
               </Button>
+              <a
+                href="/download/guide"
+                download="How-Ednovate-Labs-works.pdf"
+                className={buttonVariants({ variant: "accent", size: "xl" })}
+              >
+                <Download />
+                Download PDF
+              </a>
             </div>
 
             <p className="mt-8 flex flex-wrap items-center gap-x-3 gap-y-2 text-sm text-ink-500">
@@ -347,6 +362,13 @@ export function LandingPage() {
             <p className="mt-3 max-w-xs text-sm leading-relaxed text-blue-200">
               A guided path from choosing a course to getting hired.
             </p>
+            <a
+              href="/download/guide"
+              download="How-Ednovate-Labs-works.pdf"
+              className="mt-3 inline-block text-sm font-medium text-white underline decoration-white/30 underline-offset-4 hover:decoration-white"
+            >
+              Download the picture guide (PDF)
+            </a>
           </div>
           <FooterColumn title="Learn" links={footerLearn} />
           <FooterColumn title="Teach" links={footerTeach} />
