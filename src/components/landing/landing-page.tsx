@@ -2,11 +2,13 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowRight, Check, MapPin } from "lucide-react";
 import { AuthDialog } from "@/components/auth-dialog";
 import { FeaturedCourses } from "@/components/landing/featured-courses";
 import { HeroDemo } from "@/components/landing/hero-demo";
-import { Wordmark, WordmarkLight } from "@/components/brand";
+import { WordmarkLight } from "@/components/brand";
+import ednovateLogo from "@/images/ednovate.png";
 import { Button } from "@/components/ui/button";
 import { LinkButton } from "@/components/app/link-button";
 import { usePlatform } from "@/lib/platform-store";
@@ -82,9 +84,16 @@ export function LandingPage() {
           <Link
             href="/"
             aria-label="Ednovate Labs home"
-            className="rounded-lg outline-none focus-visible:ring-2 focus-visible:ring-blue-500/45"
+            className="inline-flex items-center gap-2 rounded-lg outline-none focus-visible:ring-2 focus-visible:ring-blue-500/45"
           >
-            <Wordmark />
+            <Image
+              src={ednovateLogo}
+              alt="Ednovate Labs"
+              priority
+              style={{ height: "50px", width: "auto" }}
+              className="object-contain"
+            />
+            <span className="text-sm font-semibold text-ink-900">Ednovatelabs</span>
           </Link>
 
           <nav className="hidden items-center gap-1 md:flex">
