@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { ArrowRight, Check, MapPin } from "lucide-react";
+import { ArrowRight, Check, Download, MapPin } from "lucide-react";
 import { AuthDialog } from "@/components/auth-dialog";
 import { FeaturedCourses } from "@/components/landing/featured-courses";
 import { HeroDemo } from "@/components/landing/hero-demo";
@@ -119,6 +119,15 @@ export function LandingPage() {
         </div>
       </header>
 
+      <a
+        href="/download/guide"
+        download="How-Ednovate-Labs-works.pdf"
+        className="sticky top-16 z-30 flex items-center justify-center gap-2 bg-gold-400 px-4 py-3 text-sm font-semibold text-ink-900 hover:bg-gold-300"
+      >
+        <Download className="size-4" />
+        Download the picture guide (PDF)
+      </a>
+
       <section className="relative overflow-hidden border-b border-ink-200">
         <div
           aria-hidden
@@ -152,9 +161,10 @@ export function LandingPage() {
               <a
                 href="/download/guide"
                 download="How-Ednovate-Labs-works.pdf"
-                className={buttonVariants({ variant: "outline", size: "xl" })}
+                className={buttonVariants({ variant: "accent", size: "xl" })}
               >
-                Download the guide
+                <Download />
+                Download PDF
               </a>
             </div>
 
