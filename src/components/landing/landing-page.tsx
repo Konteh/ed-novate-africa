@@ -338,6 +338,12 @@ export function LandingPage() {
             <p className="mt-3 max-w-xs text-sm leading-relaxed text-blue-200">
               A guided path from choosing a course to getting hired.
             </p>
+            <a
+              href="/guides/how-ednovate-labs-works.pdf"
+              className="mt-3 inline-block text-sm font-medium text-white underline decoration-white/30 underline-offset-4 hover:decoration-white"
+            >
+              Picture guide (PDF)
+            </a>
           </div>
           <FooterColumn title="Learn" links={footerLearn} />
           <FooterColumn title="Teach" links={footerTeach} />

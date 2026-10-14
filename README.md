@@ -21,6 +21,10 @@ npm run dev -- --port 43127
 
 Then open [http://localhost:43127](http://localhost:43127).
 
+## Picture guide
+
+[`public/guides/how-ednovate-labs-works.pdf`](public/guides/how-ednovate-labs-works.pdf) is a ten-page illustrated walkthrough for learners, families, tutors and partners. It follows one learner from the first question to a job, with the flow on each page. The running app links to it from the landing-page footer. The source of the pages is [`docs/user-demo/how-it-works.html`](docs/user-demo/how-it-works.html).
+
 ## Signing in
 
 The login is illustrative and the credentials are pre-filled, so you can press **Log in** without typing anything.
